@@ -6,6 +6,8 @@
  */
 #include <fcntl.h>
 #include <errno.h>
+#include <stdint.h>
+#include <stdio.h>
 #include "gpio_defines.h"
 
 static volatile uint32_t *gpio;
@@ -14,7 +16,10 @@ int main(int argc, char **argv)
 {
 	int fd;
 
-	printf(GPIO_PIN(25));
+	GPIO_SET_ALT(0, FSEL_INPUT);
+	GPIO_SET_ALT(1, FSEL_OUTPUT);
+	GPIO_SET_STATE(1, 1);
+
 	/*
 	// Obtain handle to physical memory
 	if ( (fd = open("/dev/mem", O_RDWR | O_SYNC)) < 0 )
