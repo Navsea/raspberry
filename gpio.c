@@ -16,8 +16,8 @@ int main(int argc, char **argv)
 {
 	int fd;
 
-	GPIO_SET_ALT(0, FSEL_INPUT);
-	GPIO_SET_ALT(1, FSEL_OUTPUT);
+	GPIO_SET_FUNC(0, FSEL_INPUT);
+	GPIO_SET_FUNC(1, FSEL_OUTPUT);
 	GPIO_SET_STATE(1, 1);
 
 	/*
