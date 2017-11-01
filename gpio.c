@@ -29,7 +29,7 @@ int main(int argc, char **argv)
 	}
 
 	// map physical memory to virtual memory
-	gpio = (uint32_t)mmap(0, getpagesize(), PROT_READ | PROT_WRITE, MAP_SHARED, fd, GPIO_BASE_ADDRESS);
+	gpio = (uint32_t*)mmap(0, getpagesize(), PROT_READ | PROT_WRITE, MAP_SHARED, fd, GPIO_BASE_ADDRESS);
 
 	if ( ((int32_t)gpio) <  0)
 	{
