@@ -12,16 +12,15 @@
 
 static volatile uint32_t *gpio;
 
+// set gpio pin alternate function
+#define GPIO_SET_FUNC(pin, func)		*(gpio + (pin/10)) |= (func << ((pin%10)*3))
+#define GPIO_SET_STATE(pin, state)		*(gpio + (pin/32)) |= (state << (pin%31))
+
 int main(int argc, char **argv)
 {
 	int fd;
 
-	GPIO_SET_FUNC(0, FSEL_INPUT);
-	GPIO_SET_FUNC(1, FSEL_OUTPUT);
-	GPIO_SET_STATE(1, 1);
-
-	/*
-	// Obtain handle to physical memory
+	// obtain handle to physical memory
 	if ( (fd = open("/dev/mem", O_RDWR | O_SYNC)) < 0 )
 	{
 		printf("Unable to open /dev/mem: %s\n", strerror(errno));
@@ -37,11 +36,17 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
+	// Initialize io registers
+	GPIO_SET_FUNC(0, FSEL_INPUT);
+	GPIO_SET_FUNC(1, FSEL_OUTPUT);
+
 	// do something forever
 	while(1)
 	{
-
+		GPIO_SET_STATE(1, 1);
+		sleep(1);
+		GPIO_SET_STATE(1, 0);
+		sleep(1);
 	}
-	*/
 }
 
