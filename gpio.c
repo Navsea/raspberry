@@ -15,7 +15,8 @@ static volatile uint32_t *gpio;
 
 // set gpio pin alternate function
 #define GPIO_SET_FUNC(pin, func)		*(gpio + (pin/10)) |= (func << ((pin%10)*3))
-#define GPIO_SET_STATE(pin, state)		*(gpio + (pin/32)) |= (state << (pin%31))
+#define GPIO_SET_STATE(pin)				*(gpio + OUTPUT_SET_STATE_REG_OFFSET + (pin/32)) |= (1 << (pin%31))
+#define GPIO_CLEAR_STATE(pin)			*(gpio + OUTPUT_CLEAR_STATE_REG_OFFSET + (pin/32)) |= (1 << (pin%31))
 
 int main(int argc, char **argv)
 {
@@ -44,10 +45,11 @@ int main(int argc, char **argv)
 	// do something forever
 	while(1)
 	{
-		GPIO_SET_STATE(1, 1);
+		GPIO_SET_STATE(1);
 		sleep(1);
-		GPIO_SET_STATE(1, 0);
+		GPIO_CLEAR_STATE(1);
 		sleep(1);
+		printf("completed cycle");
 	}
 }
 

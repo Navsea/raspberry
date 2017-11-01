@@ -11,10 +11,11 @@
 #define GPIO_BASE_ADDRESS (0x3F200000)
 
 // function select registers
-#define ALT_FUNC_REG_OFFSET		0		// 0x3F200000
+#define ALT_FUNC_REG_OFFSET				0		// 0x3F200000
 
 // output state registers
-#define OUTPUT_STATE_REG_OFFSET	 7		// 0x3F20001C
+#define OUTPUT_SET_STATE_REG_OFFSET	 	7		// 0x3F20001C
+#define OUTPUT_CLEAR_STATE_REG_OFFSET	10		// 0x3F200028
 
 // function select functions (can have different meanings depending on which register/io is used)
 #define FSEL_INPUT		0
