@@ -13,10 +13,22 @@
 
 static volatile uint32_t *gpio;
 
-// set gpio pin alternate function
-#define GPIO_SET_FUNC(pin, func)		*(gpio + (pin/10)) |= (func << ((pin%10)*3))
-#define GPIO_SET_STATE(pin)				*(gpio + OUTPUT_SET_STATE_REG_OFFSET + (pin/32)) |= (1 << (pin%31))
-#define GPIO_CLEAR_STATE(pin)			*(gpio + OUTPUT_CLEAR_STATE_REG_OFFSET + (pin/32)) |= (1 << (pin%31))
+// gpio register handling
+// register &= 111111000111111 |  0000010100000
+#define GPIO_SET_FUNC(pin, func)		*(gpio + (pin/10)) &= ( ~(7 << ((pin%10)*3))  | (func << ((pin%10)*3)) )
+#define GPIO_SET(pin)					*(gpio + REG_OFFSET_GPIO_SET + (pin/32)) |= (1 << (pin%31))
+#define GPIO_CLEAR(pin)					*(gpio + REG_OFFSET_GPIO_CLEAR + (pin/32)) |= (1 << (pin%31))
+#define GPIO_READ(pin)					*(gpio + REG_OFFSET_GPIO_READ + (pin/32)) &= (1 << (pin%31))
+#define GPIO_EVENT(pin)					*(gpio + REG_OFFSET_GPIO_EVENT + (pin/32)) &= (1 << (pin%31))
+#define GPIO_REDGE_EN(pin, enable)		*(gpio + REG_OFFSET_GPIO_REDGE_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) )
+#define GPIO_FEDGE_EN(pin, enable)		*(gpio + REG_OFFSET_GPIO_FEDGE_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) )
+#define GPIO_HLEV_EN(pin, enable)		*(gpio + REG_OFFSET_GPIO_HLEV_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) )
+#define GPIO_LLEV_EN(pin, enable)		*(gpio + REG_OFFSET_GPIO_LLEV_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) )
+#define GPIO_AREDGE_EN(pin, enable)		*(gpio + REG_OFFSET_GPIO_AREDGE_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) )
+#define GPIO_AFEDGE_EN(pin, enable)		*(gpio + REG_OFFSET_GPIO_AFEDGE_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) )
+// see BCM2835 spec to see how to use this, it's probably better to set multiple pins in one command --> TODO
+#define GPIO_PULL_CNTRL(pin, up)		*(gpio + REG_OFFSET_GPIO_PULL_CNTRL) = up
+#define GPIO_PULL_CLK(pin)				*(gpio + REG_OFFSET_GPIO_EN_CLK + (pin/32)) |= (1 << pin%31)
 
 int main(int argc, char **argv)
 {
@@ -42,12 +54,15 @@ int main(int argc, char **argv)
 	GPIO_SET_FUNC(0, FSEL_INPUT);
 	GPIO_SET_FUNC(1, FSEL_OUTPUT);
 
+	// print function register
+	printf("Function select reg: %s", *gpio);
+
 	// do something forever
 	while(1)
 	{
-		GPIO_SET_STATE(1);
+		GPIO_SET(1);
 		sleep(1);
-		GPIO_CLEAR_STATE(1);
+		GPIO_CLEAR(1);
 		sleep(1);
 		printf("completed cycle");
 	}
