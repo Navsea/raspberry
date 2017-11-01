@@ -55,8 +55,8 @@ int main(int argc, char **argv)
 	GPIO_SET_FUNC(1, FSEL_OUTPUT);
 
 	// print function register
-	printf("Function select address: %s", gpio);
-	printf("Function select reg: %s", *gpio);
+	printf("Function select address: %d\n", gpio);
+	printf("Function select reg: %d\n", *gpio);
 	fflush(stdout);
 
 	// do something forever
