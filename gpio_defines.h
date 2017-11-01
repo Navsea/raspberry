@@ -8,7 +8,7 @@
 #ifndef GPIO_DEFINES_H_
 #define GPIO_DEFINES_H_
 
-#define GPIO_BASE_ADDRESS ((unsigned int *)0x3F200000)
+#define GPIO_BASE_ADDRESS (0x3F200000)
 
 // function select registers
 #define ALT_FUNC_REG_OFFSET		0		// 0x3F200000
