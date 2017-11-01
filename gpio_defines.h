@@ -29,6 +29,7 @@
 #define FSEL_ALT_5		2
 
 // select an gpio
-#define GPIO_PIN(x)	ALT_FUNC_SELECT_##(x/10)
+#define GPIO_FUNC_REG(x)	(x/10)
+#define GPIO_PIN(x)			ALT_FUNC_SELECT_##GPIO_FUNC_REG(x)
 
 #endif /* GPIO_DEFINES_H_ */
