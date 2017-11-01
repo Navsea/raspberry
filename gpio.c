@@ -8,6 +8,7 @@
 #include <errno.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <sys/mman.h>
 #include "gpio_defines.h"
 
 static volatile uint32_t *gpio;
