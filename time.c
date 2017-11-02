@@ -5,6 +5,7 @@
  *      Author: Kenneth
  */
 #include <sys/time.h>
+#include <stdio.h>
 
 void main(int argc, char **argv)
 {
