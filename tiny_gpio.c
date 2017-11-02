@@ -191,15 +191,15 @@ int gpioInitialise(void)
 
    piRev = gpioHardwareRevision(); /* sets piModel and piRev */
 
-   fd = open("/dev/gpiomem", O_RDWR | O_SYNC) ;
+   fd = open("/dev/mem", O_RDWR | O_SYNC) ;
 
    if (fd < 0)
    {
-      fprintf(stderr, "failed to open /dev/gpiomem\n");
+      fprintf(stderr, "failed to open /dev/mem\n");
       return -1;
    }
 
-   gpioReg = (uint32_t *)mmap(NULL, 0xB4, PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0);
+   gpioReg = (uint32_t *)mmap(NULL, 0xB4, PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0x3F200000);
 
    close(fd);
 
