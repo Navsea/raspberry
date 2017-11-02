@@ -125,5 +125,8 @@ void setup_io()
    // Always use volatile pointer!
    gpio = (volatile unsigned *)gpio_map;
 
+   printf("gpio address: %d\n", gpio);
+   printf("gpio contents: %d\n", *gpio);
+
 
 } // setup_io
