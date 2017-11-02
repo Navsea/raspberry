@@ -57,7 +57,7 @@ int main(int argc, char **argv)
 
 	// print function register
 	printf("Function select address: %d\n", gpio);	// was 0x76F8A000, other time: 76F96000
-	printf("Function select reg: %d\n", *(uint32_t)*gpio);
+	printf("Function select reg: %d\n", (uint32_t)*gpio);
 	fflush(stdout);
 
 
