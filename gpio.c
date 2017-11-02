@@ -16,11 +16,10 @@ static volatile uint32_t *gpio;
 // gpio register handling
 // register &= 111111000111111 |  0000010100000
 // Todo still need bitshifting back cause results remain in their position in reg
-// Is still wrong we need to and first with the nonmask and then or
 #define GPIO_SET_FUNC(pin, func)		*(gpio + (pin/10)) = ( *(gpio + (pin/10)) & ~(7 << ((pin%10)*3)) )  | (func << ((pin%10)*3))
 #define GPIO_SET(pin)					*(gpio + REG_OFFSET_GPIO_SET + (pin/32)) |= (1 << (pin%31))
 #define GPIO_CLEAR(pin)					*(gpio + REG_OFFSET_GPIO_CLEAR + (pin/32)) |= (1 << (pin%31))
-#define GPIO_READ(pin)					*(gpio + REG_OFFSET_GPIO_READ + (pin/32)) &= (1 << (pin%31))
+#define GPIO_READ(pin)					(*(gpio + REG_OFFSET_GPIO_READ + (pin/32)) &= (1 << (pin%31))) >> (pin%31)
 #define GPIO_EVENT(pin)					*(gpio + REG_OFFSET_GPIO_EVENT + (pin/32)) &= (1 << (pin%31))
 #define GPIO_REDGE_EN(pin, enable)		*(gpio + REG_OFFSET_GPIO_REDGE_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) )
 #define GPIO_FEDGE_EN(pin, enable)		*(gpio + REG_OFFSET_GPIO_FEDGE_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) )
@@ -52,9 +51,12 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
-	// Initialize io registers
-	GPIO_SET_FUNC(0, FSEL_INPUT);
-	GPIO_SET_FUNC(1, FSEL_OUTPUT);
+	// Initialize io registers to outputs
+	for (int i = 0; i < 30; i++)
+	{
+		GPIO_SET_FUNC(i, FSEL_OUTPUT);
+	}
+
 
 	// print function register
 	printf("Function select address: %d\n", gpio);	// was 0x76F8A000, other time: 76F96000
@@ -64,13 +66,18 @@ int main(int argc, char **argv)
 	// do something forever
 	while(1)
 	{
-		GPIO_SET(1);
-		printf("GPIO pin 1(ON): %d\n", GPIO_READ(1));
-		sleep(1);
-		GPIO_CLEAR(1);
-		printf("GPIO pin 1(OFF): %d\n", GPIO_READ(1));
-		sleep(1);
-		printf("completed cycle\n");
+		for (int i = 0; i < 30; i++)
+		{
+			GPIO_SET(i);
+			printf("GPIO pin 1(ON): %d\n", GPIO_READ(1));
+		}
+		sleep(5);
+		for (int i = 0; i < 30; i++)
+		{
+			GPIO_CLEAR(i);
+			printf("GPIO pin 1(OFF): %d\n", GPIO_READ(1));
+		}
+		sleep(5);
 		fflush(stdout);
 	}
 }
