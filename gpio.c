@@ -33,7 +33,7 @@ static volatile uint32_t *gpio;
 
 int main(int argc, char **argv)
 {
-	int fd;
+	int fd, i;
 
 	// obtain handle to physical memory
 	if ( (fd = open("/dev/mem", O_RDWR | O_SYNC)) < 0 )
@@ -52,7 +52,7 @@ int main(int argc, char **argv)
 	}
 
 	// Initialize io registers to outputs
-	for (int i = 0; i < 30; i++)
+	for (i = 0; i < 30; i++)
 	{
 		GPIO_SET_FUNC(i, FSEL_OUTPUT);
 	}
@@ -66,13 +66,13 @@ int main(int argc, char **argv)
 	// do something forever
 	while(1)
 	{
-		for (int i = 0; i < 30; i++)
+		for (i = 0; i < 30; i++)
 		{
 			GPIO_SET(i);
 			printf("GPIO pin 1(ON): %d\n", GPIO_READ(1));
 		}
 		sleep(5);
-		for (int i = 0; i < 30; i++)
+		for (i = 0; i < 30; i++)
 		{
 			GPIO_CLEAR(i);
 			printf("GPIO pin 1(OFF): %d\n", GPIO_READ(1));
