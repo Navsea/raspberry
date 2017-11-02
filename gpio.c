@@ -15,6 +15,7 @@ static volatile uint32_t *gpio;
 
 // gpio register handling
 // register &= 111111000111111 |  0000010100000
+// Todo still need bitshifting back cause results remain in their position in reg
 #define GPIO_SET_FUNC(pin, func)		*(gpio + (pin/10)) &= ( ~(7 << ((pin%10)*3))  | (func << ((pin%10)*3)) )
 #define GPIO_SET(pin)					*(gpio + REG_OFFSET_GPIO_SET + (pin/32)) |= (1 << (pin%31))
 #define GPIO_CLEAR(pin)					*(gpio + REG_OFFSET_GPIO_CLEAR + (pin/32)) |= (1 << (pin%31))
@@ -55,9 +56,14 @@ int main(int argc, char **argv)
 	GPIO_SET_FUNC(1, FSEL_OUTPUT);
 
 	// print function register
-	printf("Function select address: %d\n", gpio);	// was 0x76F8A000
-	printf("Function select reg: %d\n", *gpio);
+	printf("Function select address: %d\n", gpio);	// was 0x76F8A000, other time: 76F96000
+	printf("Function select reg: %d\n", *(uint32_t)gpio);
 	fflush(stdout);
+
+
+	printf("Function for pin 29: %d", ( ~(7 << ((29%10)*3))  | (1 << ((29%10)*3)) ) );
+	printf("Function for pin 12: %d", ( ~(7 << ((12%10)*3))  | (1 << ((12%10)*3)) ) );
+	printf("Function for pin 6: %d", ( ~(7 << ((6%10)*3))  | (1 << ((6%10)*3)) ) );
 
 	// do something forever
 	while(1)
