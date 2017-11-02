@@ -219,9 +219,11 @@ main()
 
    printf("Pi model = %d, Pi revision = %d\n", piModel, piRev);
 
-   for (i=0; i<54; i++)
+   for (i=0; i<30; i++)
 	{
 		gpioSetMode(i, 1);
+		printf("success for i: %d", i);
+		fflush(stdout);
 	}
 
    for (i=0; i<54; i++)
