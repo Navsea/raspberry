@@ -220,6 +220,11 @@ main()
    printf("Pi model = %d, Pi revision = %d\n", piModel, piRev);
 
    for (i=0; i<54; i++)
+	{
+		gpioSetMode(i, 1);
+	}
+
+   for (i=0; i<54; i++)
    {
       printf("gpio=%d mode=%d level=%d\n",
          i, gpioGetMode(i), gpioRead(i));
