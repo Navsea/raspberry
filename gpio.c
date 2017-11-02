@@ -55,7 +55,7 @@ int main(int argc, char **argv)
 	GPIO_SET_FUNC(1, FSEL_OUTPUT);
 
 	// print function register
-	printf("Function select address: %d\n", gpio);
+	printf("Function select address: %d\n", gpio);	// was 0x76F8A000
 	printf("Function select reg: %d\n", *gpio);
 	fflush(stdout);
 
@@ -63,8 +63,10 @@ int main(int argc, char **argv)
 	while(1)
 	{
 		GPIO_SET(1);
+		printf("GPIO pin 1(ON): %d\n", GPIO_READ(1));
 		sleep(1);
 		GPIO_CLEAR(1);
+		printf("GPIO pin 1(OFF): %d\n", GPIO_READ(1));
 		sleep(1);
 		printf("completed cycle\n");
 		fflush(stdout);
