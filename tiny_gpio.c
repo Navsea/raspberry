@@ -222,9 +222,15 @@ main()
    for (i=0; i<30; i++)
 	{
 		gpioSetMode(i, 1);
-		printf("success for i: %d", i);
+		printf("success for i: %d\n", i);
 		fflush(stdout);
 	}
+
+   for (i=0; i<30; i++)
+   	{
+	    gpioWrite(i, 1);
+   		fflush(stdout);
+   	}
 
    for (i=0; i<54; i++)
    {
