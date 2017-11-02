@@ -100,8 +100,8 @@ int main(int argc, char **argv)
 void setup_io()
 {
    /* open /dev/mem */
-   if ((mem_fd = open("/dev/mem", O_RDWR|O_SYNC) ) < 0) {
-      printf("can't open /dev/mem \n");
+   if ((mem_fd = open("/dev/gpiomem", O_RDWR|O_SYNC) ) < 0) {
+      printf("can't open /dev/gpiomem \n");
       exit(-1);
    }
 
@@ -112,7 +112,7 @@ void setup_io()
       PROT_READ|PROT_WRITE,// Enable reading & writting to mapped memory
       MAP_SHARED,       //Shared with other processes
       mem_fd,           //File to map
-      GPIO_BASE         //Offset to GPIO peripheral
+      0         //Offset to GPIO peripheral
    );
 
    close(mem_fd); //No need to keep mem_fd open after mmap
