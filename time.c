@@ -9,6 +9,5 @@
 
 void main(int argc, char **argv)
 {
-	time_t the_time;
-	printf("The time is: %s", ctime(time(0)));
+	printf("The time is: %s", ctime(&time(0)));
 }
