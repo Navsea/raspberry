@@ -57,13 +57,13 @@ int main(int argc, char **argv)
 
 	// print function register
 	printf("Function select address: %d\n", gpio);	// was 0x76F8A000, other time: 76F96000
-	printf("Function select reg: %d\n", *(uint32_t)gpio);
+	printf("Function select reg: %d\n", *(uint32_t)*gpio);
 	fflush(stdout);
 
 
-	printf("Function for pin 29: %d", ( ~(7 << ((29%10)*3))  | (1 << ((29%10)*3)) ) );
-	printf("Function for pin 12: %d", ( ~(7 << ((12%10)*3))  | (1 << ((12%10)*3)) ) );
-	printf("Function for pin 6: %d", ( ~(7 << ((6%10)*3))  | (1 << ((6%10)*3)) ) );
+	printf("masking for pin 29: %d", ( ~(7 << ((29%10)*3))  | (1 << ((29%10)*3)) ) );
+	printf("masking for pin 12: %d", ( ~(7 << ((12%10)*3))  | (1 << ((12%10)*3)) ) );
+	printf("masking for pin 6: %d", ( ~(7 << ((6%10)*3))  | (1 << ((6%10)*3)) ) );
 
 	// do something forever
 	while(1)
