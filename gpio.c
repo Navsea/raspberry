@@ -61,9 +61,9 @@ int main(int argc, char **argv)
 	fflush(stdout);
 
 
-	printf("masking for pin 29: %d", ( ~(7 << ((29%10)*3))  | (1 << ((29%10)*3)) ) );
-	printf("masking for pin 12: %d", ( ~(7 << ((12%10)*3))  | (1 << ((12%10)*3)) ) );
-	printf("masking for pin 6: %d", ( ~(7 << ((6%10)*3))  | (1 << ((6%10)*3)) ) );
+	printf("masking for pin 29: %x\n", ( ~(7 << ((29%10)*3))  | (1 << ((29%10)*3)) ) );
+	printf("masking for pin 12: %x\n", ( ~(7 << ((12%10)*3))  | (1 << ((12%10)*3)) ) );
+	printf("masking for pin 6: %x\n", ( ~(7 << ((6%10)*3))  | (1 << ((6%10)*3)) ) );
 
 	// do something forever
 	while(1)
