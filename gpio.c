@@ -60,7 +60,13 @@ int main(int argc, char **argv)
 
 	// Set pull downs
 	GPIO_PULL_CNTRL(PULL_DOWN);
+	printf("Set pull cntrl reg, have to wait 150 cycles");
+	sleep(1);
 	GPIO_PULL_CLK(2);
+	printf("Set pull clock reg, have to wait 150 cycles");
+	sleep(1);
+	GPIO_PULL_CNTRL(PULL_NONE);
+	GPIO_PULL_CLK(0);
 
 	// print function register
 	printf("gpio function select 0 address: %x\n", gpio);	// 76FF3000
