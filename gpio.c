@@ -60,24 +60,39 @@ int main(int argc, char **argv)
 
 
 	// print function register
-	printf("gpio function select address: %d\n", gpio);	// 76FF3000
-	printf("gpio function select reg: %d\n", *gpio);
+	printf("gpio function select 0 address: %x\n", gpio);	// 76FF3000
+	printf("gpio function select 0 reg: %x\n", *gpio);
+
+	printf("gpio function select 1 address: %x\n", gpio+1);	// 76FF3000
+	printf("gpio function select 1 reg: %x\n", *(gpio+1));
+
+	printf("gpio function select 2 address: %x\n", gpio+2);	// 76FF3000
+	printf("gpio function select 2 reg: %x\n", *(gpio+2));
+
+	printf("gpio function select 3 address: %x\n", gpio+3);	// 76FF3000
+	printf("gpio function select 3 reg: %x\n", *(gpio+3));
+
+	printf("gpio function select 4 address: %x\n", gpio+4);	// 76FF3000
+	printf("gpio function select 4 reg: %x\n", *(gpio+4));
+
+	printf("gpio function select 5 address: %x\n", gpio+5);	// 76FF3000
+	printf("gpio function select 5 reg: %x\n", *(gpio+5));
 
 	// print set register
-	printf("gpio set address: %d\n", (gpio+REG_OFFSET_GPIO_SET));	// 76FF301C
-	printf("gpio set reg: %d\n", *(gpio+REG_OFFSET_GPIO_SET));
+	printf("gpio set address: %x\n", (gpio+REG_OFFSET_GPIO_SET));	// 76FF301C
+	printf("gpio set reg: %x\n", *(gpio+REG_OFFSET_GPIO_SET));
 
 	// print clear register
-	printf("gpio clear address: %d\n", (gpio+REG_OFFSET_GPIO_CLEAR));	// 76FF3028
-	printf("gpio clear reg: %d\n", *(gpio+REG_OFFSET_GPIO_CLEAR));
+	printf("gpio clear address: %x\n", (gpio+REG_OFFSET_GPIO_CLEAR));	// 76FF3028
+	printf("gpio clear reg: %x\n", *(gpio+REG_OFFSET_GPIO_CLEAR));
 
 	// print read register
-	printf("gpio read address: %d\n", (gpio+REG_OFFSET_GPIO_READ));		// 76FF3034
-	printf("gpio read reg: %d\n", *(gpio+REG_OFFSET_GPIO_READ));
+	printf("gpio read address: %x\n", (gpio+REG_OFFSET_GPIO_READ));		// 76FF3034
+	printf("gpio read reg: %x\n", *(gpio+REG_OFFSET_GPIO_READ));
 
 	// print event register
-	printf("gpio event address: %d\n", (gpio+REG_OFFSET_GPIO_EVENT));	// 76FF3040
-	printf("pgio event reg: %d\n", *(gpio+REG_OFFSET_GPIO_EVENT));
+	printf("gpio event address: %x\n", (gpio+REG_OFFSET_GPIO_EVENT));	// 76FF3040
+	printf("pgio event reg: %x\n", *(gpio+REG_OFFSET_GPIO_EVENT));
 
 	fflush(stdout);
 
