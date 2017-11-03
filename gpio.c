@@ -72,19 +72,17 @@ int main(int argc, char **argv)
 			if ((i+1)%2)
 			{
 				GPIO_SET(i);
-				printf("SET i = %d\n", i);
 			}
 			else
 			{
 				GPIO_CLEAR(i);
-				printf("CLEAR i = %d\n", i);
 			}
 			printf("GPIO pin %d: %s\n", i, (GPIO_READ(i))?"ON":"OFF");
 		}
 		k=!k;
 
 		// Check the entire IO reg
-		printf("%x", *(gpio + REG_OFFSET_GPIO_READ));
+		printf("%x", ((uint32_t)*(gpio + REG_OFFSET_GPIO_READ)));
 
 		sleep(10);
 	}
