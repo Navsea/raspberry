@@ -84,7 +84,7 @@ int main(int argc, char **argv)
 		k=!k;
 
 		// Check the entire IO reg
-		printf(*(gpio + REG_OFFSET_GPIO_READ));
+		printf("%x", *(gpio + REG_OFFSET_GPIO_READ));
 
 		sleep(10);
 	}
