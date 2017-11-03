@@ -82,7 +82,11 @@ int main(int argc, char **argv)
 			printf("GPIO pin %d: %s\n", i, (GPIO_READ(i))?"ON":"OFF");
 		}
 		k=!k;
-		sleep(5);
+
+		// Check the entire IO reg
+		printf(*(gpio + REG_OFFSET_GPIO_READ));
+
+		sleep(10);
 	}
 }
 
