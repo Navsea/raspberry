@@ -33,7 +33,7 @@ static volatile uint32_t *gpio;
 int main(int argc, char **argv)
 {
 	int fd, i;
-	unsigned char k = 0;
+	static unsigned char k = 0;
 
 	// obtain handle to physical memory
 	if ( (fd = open("/dev/mem", O_RDWR | O_SYNC)) < 0 )
@@ -72,10 +72,12 @@ int main(int argc, char **argv)
 			if ((i+k)%2)
 			{
 				GPIO_SET(i);
+				printf("SET i = %d\n", i);
 			}
 			else
 			{
 				GPIO_CLEAR(i);
+				printf("CLEAR i = %d\n", i);
 			}
 			k = !k;
 			printf("GPIO pin %d: %s\n", i, (GPIO_READ(i))?"ON":"OFF");
