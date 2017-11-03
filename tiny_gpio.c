@@ -223,12 +223,11 @@ main()
 	{
 		gpioSetMode(i, 0);
 		printf("success for i: %d\n", i);
-		fflush(stdout);
 	}
 
    for (i=0; i<30; i++)
    	{
-	   gpioSetPullUpDown(i, 1);
+	   gpioSetPullUpDown(i, 0);
    	}
 
    for (i=0; i<54; i++)
