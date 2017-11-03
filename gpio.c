@@ -60,23 +60,23 @@ int main(int argc, char **argv)
 
 
 	// print function register
-	printf("gpio function select address: %d\n", gpio);	// was 0x76F8A000, other time: 76F96000
+	printf("gpio function select address: %d\n", gpio);	// 76FF3000
 	printf("gpio function select reg: %d\n", *gpio);
 
 	// print set register
-	printf("gpio set address: %d\n", (gpio+REG_OFFSET_GPIO_SET));
+	printf("gpio set address: %d\n", (gpio+REG_OFFSET_GPIO_SET));	// 76FF301C
 	printf("gpio set reg: %d\n", *(gpio+REG_OFFSET_GPIO_SET));
 
 	// print clear register
-	printf("gpio clear address: %d\n", (gpio+REG_OFFSET_GPIO_CLEAR));
+	printf("gpio clear address: %d\n", (gpio+REG_OFFSET_GPIO_CLEAR));	// 76FF3028
 	printf("gpio clear reg: %d\n", *(gpio+REG_OFFSET_GPIO_CLEAR));
 
 	// print read register
-	printf("gpio read address: %d\n", (gpio+REG_OFFSET_GPIO_READ));
+	printf("gpio read address: %d\n", (gpio+REG_OFFSET_GPIO_READ));		// 76FF3034
 	printf("gpio read reg: %d\n", *(gpio+REG_OFFSET_GPIO_READ));
 
 	// print event register
-	printf("gpio event address: %d\n", (gpio+REG_OFFSET_GPIO_EVENT));
+	printf("gpio event address: %d\n", (gpio+REG_OFFSET_GPIO_EVENT));	// 76FF3040
 	printf("pgio event reg: %d\n", *(gpio+REG_OFFSET_GPIO_EVENT));
 
 	fflush(stdout);
@@ -87,14 +87,14 @@ int main(int argc, char **argv)
 		printf("k is: %d\n", k);
 		for (i = 0; i < 30; i++)
 		{
-			if (((i+k)%2)==0)
+			//if (((i+k)%2)==0)
 			{
 				GPIO_SET(i);
 			}
-			else
+			/*else
 			{
 				GPIO_CLEAR(i);
-			}
+			}*/
 			printf("GPIO pin %d: %s\n", i, (GPIO_READ(i))?"ON":"OFF");
 		}
 		k=!k;
