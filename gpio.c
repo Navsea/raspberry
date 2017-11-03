@@ -11,7 +11,7 @@
 #include <sys/mman.h>
 #include "gpio_defines.h"
 
-static volatile uint32_t *gpio;
+static volatile unsigned int *gpio;
 
 // gpio register handling
 // still had an issue with pin numbering, if I only testing PIN1 it did not work!
@@ -43,6 +43,7 @@ int main(int argc, char **argv)
 	}
 
 	// map physical memory to virtual memory
+	printf("The pagesize is: %x", getpagesize());
 	gpio = (uint32_t*)mmap(0, getpagesize(), PROT_READ | PROT_WRITE, MAP_SHARED, fd, GPIO_BASE_ADDRESS);
 
 	if ( ((int32_t)gpio) <  0)
@@ -59,8 +60,25 @@ int main(int argc, char **argv)
 
 
 	// print function register
-	printf("Function select address: %d\n", gpio);	// was 0x76F8A000, other time: 76F96000
-	printf("Function select reg: %d\n", (uint32_t)*gpio);
+	printf("gpio function select address: %d\n", gpio);	// was 0x76F8A000, other time: 76F96000
+	printf("gpio function select reg: %d\n", *gpio);
+
+	// print set register
+	printf("gpio set address: %d\n", (gpio+REG_OFFSET_GPIO_SET));
+	printf("gpio set reg: %d\n", *(gpio+REG_OFFSET_GPIO_SET));
+
+	// print clear register
+	printf("gpio clear address: %d\n", (gpio+REG_OFFSET_GPIO_CLEAR));
+	printf("gpio clear reg: %d\n", *(gpio+REG_OFFSET_GPIO_CLEAR));
+
+	// print read register
+	printf("gpio read address: %d\n", (gpio+REG_OFFSET_GPIO_READ));
+	printf("gpio read reg: %d\n", *(gpio+REG_OFFSET_GPIO_READ));
+
+	// print event register
+	printf("gpio event address: %d\n", (gpio+REG_OFFSET_GPIO_EVENT));
+	printf("pgio event reg: %d\n", *(gpio+REG_OFFSET_GPIO_EVENT));
+
 	fflush(stdout);
 
 	// do something forever
@@ -82,7 +100,7 @@ int main(int argc, char **argv)
 		k=!k;
 
 		// Check the entire IO reg
-		printf("%x", ((uint32_t)*(gpio + REG_OFFSET_GPIO_READ)));
+		printf("The whole read reg: %x\n", ((uint32_t)*(gpio + REG_OFFSET_GPIO_READ)));		//2ffaebef 10051410
 
 		sleep(10);
 	}
