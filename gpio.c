@@ -69,7 +69,7 @@ int main(int argc, char **argv)
 		printf("k is: %d\n", k);
 		for (i = 0; i < 30; i++)
 		{
-			if ((i+k)%2)
+			if ((i+1)%2)
 			{
 				GPIO_SET(i);
 				printf("SET i = %d\n", i);
