@@ -62,11 +62,11 @@ int main(int argc, char **argv)
 	GPIO_PULL_CNTRL(PULL_DOWN);
 	printf("Set pull cntrl reg, have to wait 150 cycles\n");
 	sleep(1);
-	*(gpio + REG_OFFSET_GPIO_EN_CLK + (pin/32)) = (0xFFFFFFFF);
+	*(gpio + REG_OFFSET_GPIO_EN_CLK) = (0xFFFFFFFF);
 	printf("Set pull clock reg, have to wait 150 cycles\n");
 	sleep(1);
 	GPIO_PULL_CNTRL(PULL_NONE);
-	*(gpio + REG_OFFSET_GPIO_EN_CLK + (pin/32)) = (0);
+	*(gpio + REG_OFFSET_GPIO_EN_CLK) = (0);
 
 	// print function register
 	printf("gpio function select 0 address: %x\n", gpio);	// 76FF3000
