@@ -27,7 +27,7 @@ static volatile unsigned int *gpio;
 #define GPIO_AREDGE_EN(pin, enable)		*(gpio + REG_OFFSET_GPIO_AREDGE_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) )
 #define GPIO_AFEDGE_EN(pin, enable)		*(gpio + REG_OFFSET_GPIO_AFEDGE_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) )
 // see BCM2835 spec to see how to use this, it's probably better to set multiple pins in one command --> TODO
-#define GPIO_PULL_CNTRL(pin, up)		*(gpio + REG_OFFSET_GPIO_PULL_CNTRL) = up
+#define GPIO_PULL_CNTRL(pull)			*(gpio + REG_OFFSET_GPIO_PULL_CNTRL) = pull
 #define GPIO_PULL_CLK(pin)				*(gpio + REG_OFFSET_GPIO_EN_CLK + (pin/32)) |= (1 << pin%31)
 
 int main(int argc, char **argv)
@@ -58,6 +58,9 @@ int main(int argc, char **argv)
 		GPIO_SET_FUNC(i, FSEL_INPUT);
 	}
 
+	// Set pull downs
+	GPIO_PULL_CNTRL(PULL_DOWN);
+	GPIO_PULL_CLK(2);
 
 	// print function register
 	printf("gpio function select 0 address: %x\n", gpio);	// 76FF3000
@@ -106,7 +109,7 @@ int main(int argc, char **argv)
 
 		// Check the entire IO reg
 		printf("The whole read reg: %x\n", ((uint32_t)*(gpio + REG_OFFSET_GPIO_READ)));		//2ffaebef 10051410
-		k = !k;
+
 		sleep(1);
 	}
 }
