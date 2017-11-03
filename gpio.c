@@ -14,8 +14,7 @@
 static volatile uint32_t *gpio;
 
 // gpio register handling
-// register &= 111111000111111 |  0000010100000
-// Todo still need bitshifting back cause results remain in their position in reg
+// still had an issue with pin numbering, if I only testing PIN1 it did not work!
 #define GPIO_SET_FUNC(pin, func)		*(gpio + (pin/10)) = ( *(gpio + (pin/10)) & ~(7 << ((pin%10)*3)) )  | (func << ((pin%10)*3))
 #define GPIO_SET(pin)					*(gpio + REG_OFFSET_GPIO_SET + (pin/32)) |= (1 << (pin%31))
 #define GPIO_CLEAR(pin)					*(gpio + REG_OFFSET_GPIO_CLEAR + (pin/32)) |= (1 << (pin%31))
@@ -34,6 +33,7 @@ static volatile uint32_t *gpio;
 int main(int argc, char **argv)
 {
 	int fd, i;
+	unsigned char k = 0;
 
 	// obtain handle to physical memory
 	if ( (fd = open("/dev/mem", O_RDWR | O_SYNC)) < 0 )
@@ -68,14 +68,16 @@ int main(int argc, char **argv)
 	{
 		for (i = 0; i < 30; i++)
 		{
-			GPIO_SET(i);
-			printf("GPIO pin 1(ON): %d\n", GPIO_READ(1));
-		}
-		sleep(5);
-		for (i = 0; i < 30; i++)
-		{
-			GPIO_CLEAR(i);
-			printf("GPIO pin 1(OFF): %d\n", GPIO_READ(1));
+			if ((i+k)%2)
+			{
+				GPIO_SET(i);
+			}
+			else
+			{
+				GPIO_CLEAR(i);
+			}
+			k = !k;
+			printf("GPIO pin %d: %s", i, (GPIO_READ(i))?"ON":"OFF");
 		}
 		sleep(5);
 		fflush(stdout);
