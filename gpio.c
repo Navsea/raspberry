@@ -55,7 +55,7 @@ int main(int argc, char **argv)
 	// Initialize io registers to outputs
 	for (i = 0; i < 30; i++)
 	{
-		GPIO_SET_FUNC(i, FSEL_OUTPUT);
+		GPIO_SET_FUNC(i, FSEL_INPUT);
 	}
 
 
@@ -100,11 +100,6 @@ int main(int argc, char **argv)
 	while(1)
 	{
 		static int k = 1;
-
-		if ( k )
-			GPIO_SET(2);
-		else
-			GPIO_CLEAR(2);
 
 		printf("GPIO pin %d: %s\n", 2, (GPIO_READ(2))?"ON":"OFF");
 
