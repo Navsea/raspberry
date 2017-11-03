@@ -99,7 +99,7 @@ int main(int argc, char **argv)
 	// do something forever
 	while(1)
 	{
-		int k = 1;
+		static int k = 1;
 
 		if ( k )
 			GPIO_SET(2);
