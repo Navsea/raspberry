@@ -107,7 +107,7 @@ int main(int argc, char **argv)
 		// Check the entire IO reg
 		printf("The whole read reg: %x\n", ((uint32_t)*(gpio + REG_OFFSET_GPIO_READ)));		//2ffaebef 10051410
 		k = !k;
-		sleep(10);
+		sleep(1);
 	}
 }
 
