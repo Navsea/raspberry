@@ -43,7 +43,7 @@ int main(int argc, char **argv)
 	}
 
 	// map physical memory to virtual memory
-	printf("The pagesize is: %x", getpagesize());
+	printf("The pagesize is: %x\n", getpagesize());
 	gpio = (uint32_t*)mmap(0, getpagesize(), PROT_READ | PROT_WRITE, MAP_SHARED, fd, GPIO_BASE_ADDRESS);
 
 	if ( ((int32_t)gpio) <  0)
@@ -60,10 +60,10 @@ int main(int argc, char **argv)
 
 	// Set pull downs
 	GPIO_PULL_CNTRL(PULL_DOWN);
-	printf("Set pull cntrl reg, have to wait 150 cycles");
+	printf("Set pull cntrl reg, have to wait 150 cycles\n");
 	sleep(1);
-	GPIO_PULL_CLK(2);
-	printf("Set pull clock reg, have to wait 150 cycles");
+	GPIO_PULL_CLK(0xFFFFFFFF);
+	printf("Set pull clock reg, have to wait 150 cycles\n");
 	sleep(1);
 	GPIO_PULL_CNTRL(PULL_NONE);
 	GPIO_PULL_CLK(0);
