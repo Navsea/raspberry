@@ -221,15 +221,14 @@ main()
 
    for (i=0; i<30; i++)
 	{
-		gpioSetMode(i, 1);
+		gpioSetMode(i, 0);
 		printf("success for i: %d\n", i);
 		fflush(stdout);
 	}
 
    for (i=0; i<30; i++)
    	{
-	    gpioWrite(i, 1);
-   		fflush(stdout);
+	   gpioSetPullUpDown(i, 1);
    	}
 
    for (i=0; i<54; i++)
