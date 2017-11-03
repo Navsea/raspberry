@@ -69,7 +69,7 @@ int main(int argc, char **argv)
 		printf("k is: %d\n", k);
 		for (i = 0; i < 30; i++)
 		{
-			if (i%2)
+			if ((i+k)%2)
 			{
 				GPIO_SET(i);
 				printf("SET i = %d\n", i);
@@ -79,10 +79,9 @@ int main(int argc, char **argv)
 				GPIO_CLEAR(i);
 				printf("CLEAR i = %d\n", i);
 			}
-			k = k+1;
 			printf("GPIO pin %d: %s\n", i, (GPIO_READ(i))?"ON":"OFF");
 		}
-		fflush(stdout);
+		k=!k;
 		sleep(5);
 	}
 }
