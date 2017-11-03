@@ -59,7 +59,7 @@ int main(int argc, char **argv)
 	}
 
 	// Set pull downs
-	GPIO_PULL_CNTRL(PULL_DOWN);
+	GPIO_PULL_CNTRL(PULL_UP);
 	printf("Set pull cntrl reg, have to wait 150 cycles\n");
 	sleep(1);
 	*(gpio + REG_OFFSET_GPIO_EN_CLK) = (0xFFFFFFFF);
