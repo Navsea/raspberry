@@ -10,6 +10,8 @@
 
 #define GPIO_BASE_ADDRESS (0x3F200000)
 
+// GPIO's: 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
+#define GPIO_ACCESSABLE_MASK (0b00111111111111111111111111110000)
 
 /* This section states the offset for the corresponding register when using 32 bit pointers (offset 1 is 4 bytes further than base) */
 // function select register
@@ -48,6 +50,9 @@
 
 // pull up/down enable register offsets
 #define REG_OFFSET_GPIO_PULL_CNTRL		37		// 0x3F200094
+	#define PULL_NONE					0
+	#define PULL_DOWN					1
+	#define PULL_UP						2
 #define REG_OFFSET_GPIO_EN_CLK			38		// 0x3F20009C
 
 #endif /* GPIO_DEFINES_H_ */
