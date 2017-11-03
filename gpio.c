@@ -99,24 +99,19 @@ int main(int argc, char **argv)
 	// do something forever
 	while(1)
 	{
-		printf("k is: %d\n", k);
-		for (i = 0; i < 30; i++)
-		{
-			//if (((i+k)%2)==0)
-			{
-				GPIO_SET(i);
-			}
-			/*else
-			{
-				GPIO_CLEAR(i);
-			}*/
-			printf("GPIO pin %d: %s\n", i, (GPIO_READ(i))?"ON":"OFF");
-		}
-		k=!k;
+		int k = 1;
+
+		if ( k )
+			GPIO_SET(2);
+		else
+			GPIO_CLEAR(2);
+
+		printf("GPIO pin %d: %s\n", 2, (GPIO_READ(2))?"ON":"OFF");
+
 
 		// Check the entire IO reg
 		printf("The whole read reg: %x\n", ((uint32_t)*(gpio + REG_OFFSET_GPIO_READ)));		//2ffaebef 10051410
-
+		k = !k;
 		sleep(10);
 	}
 }
