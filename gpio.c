@@ -66,6 +66,7 @@ int main(int argc, char **argv)
 	// do something forever
 	while(1)
 	{
+		printf("k is: %d\n", k);
 		for (i = 0; i < 30; i++)
 		{
 			if ((i+k)%2)
@@ -77,10 +78,10 @@ int main(int argc, char **argv)
 				GPIO_CLEAR(i);
 			}
 			k = !k;
-			printf("GPIO pin %d: %s", i, (GPIO_READ(i))?"ON":"OFF");
+			printf("GPIO pin %d: %s\n", i, (GPIO_READ(i))?"ON":"OFF");
 		}
-		sleep(5);
 		fflush(stdout);
+		sleep(5);
 	}
 }
 
