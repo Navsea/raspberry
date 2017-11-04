@@ -26,6 +26,7 @@ int main(int argc, char **argv)
 	uint8_t i = 0;
 	char dev_buffer[256];
 	char temp_data[6];
+	ssize_t l_num_bytes;
 
 	if ((one_wire_dir = opendir(one_wire_path)) < 0)
 	{
@@ -59,7 +60,7 @@ int main(int argc, char **argv)
 	for(i = 0; i<ls_sensor_index; i++)
 	{
 		sprintf(dev_path, "%s/%s/w1_slave", one_wire_path, dev_name[i]);
-		printf("full path of device: %s", dev_path);
+		printf("full path of device: %s\n", dev_path);
 
 		if ((fd[i] = open(dev_path, O_RDONLY)) < 0)
 		{
@@ -68,18 +69,17 @@ int main(int argc, char **argv)
 		}
 		else
 		{
-			printf("Successfully opened sensor path");
+			printf("Successfully opened sensor path\n");
 		}
 	}
-/*
 	while(1)
 	{
-		while( read(fd[0], dev_buffer, 256) > 0 )
+		while( (l_num_bytes = read(fd[0], dev_buffer, 256)) > 0 )
 		{
 			strncpy(temp_data, strstr(dev_buffer, "t=")+2, 5);
 			printf("device 0: %s", temp_data);
 		}
 		sleep(5);
-	}*/
+	}
 }
 
