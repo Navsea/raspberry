@@ -21,7 +21,7 @@ int main(int argc, char **argv)
 	struct dirent *dirent;
 	char dev_name[MAX_SENSORS][12];
 	static uint8_t ls_sensor_index;
-	uint32_t fd[MAX_SENSORS] = 0;
+	uint32_t fd[MAX_SENSORS] = {0};
 	char dev_path[128];
 	uint8_t i = 0;
 	char dev_buffer[256];
