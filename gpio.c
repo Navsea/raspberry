@@ -14,7 +14,7 @@
 static volatile unsigned int *gpio;
 
 // gpio register handling
-// still had an issue with pin numbering, if I only testing PIN1 it did not work!
+// Input handling does not work,
 #define GPIO_SET_FUNC(pin, func)		*(gpio + (pin/10)) = ( *(gpio + (pin/10)) & ~(7 << ((pin%10)*3)) )  | (func << ((pin%10)*3))
 #define GPIO_SET(pin)					*(gpio + REG_OFFSET_GPIO_SET + (pin/32)) |= (1 << (pin%31))
 #define GPIO_CLEAR(pin)					*(gpio + REG_OFFSET_GPIO_CLEAR + (pin/32)) |= (1 << (pin%31))
@@ -58,13 +58,16 @@ int main(int argc, char **argv)
 		GPIO_SET_FUNC(i, FSEL_INPUT);
 	}
 
+	//maybe wait
+	sleep(5);
+
 	// Set pull downs
 	GPIO_PULL_CNTRL(PULL_UP);
 	printf("Set pull cntrl reg, have to wait 150 cycles\n");
-	sleep(1);
+	usleep(200);
 	*(gpio + REG_OFFSET_GPIO_EN_CLK) = (0xFFFFFFFF);
 	printf("Set pull clock reg, have to wait 150 cycles\n");
-	sleep(1);
+	usleep(200);
 	GPIO_PULL_CNTRL(PULL_NONE);
 	*(gpio + REG_OFFSET_GPIO_EN_CLK) = (0);
 
@@ -110,8 +113,10 @@ int main(int argc, char **argv)
 	{
 		static int k = 1;
 
-		printf("GPIO pin %d: %s\n", 2, (GPIO_READ(2))?"ON":"OFF");
-
+		for(i=0; i<30; i++)
+		{
+			printf("GPIO pin %d: %s\n", i, (GPIO_READ(i))?"ON":"OFF");
+		}
 
 		// Check the entire IO reg
 		printf("The whole read reg: %x\n", ((uint32_t)*(gpio + REG_OFFSET_GPIO_READ)));		//2ffaebef 10051410
