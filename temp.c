@@ -37,10 +37,10 @@ int main(int argc, char **argv)
 		printf("Opened %s\n", one_wire_path);
 	}
 
-	dirent = readdir(one_wire_dir);
-
-	printf("first entry: %s", dirent->d_name);
-
+	while ((dirent = readdir(one_wire_dir)) != NULL)
+	{
+		printf("entry: %s", dirent->d_name);
+	}
 	/*
 	// find all the sensors one the one wire bus, max 5
 	while( ((dirent = readdir(one_wire_dir) ) != NULL) && (ls_sensor_index < 5) )
