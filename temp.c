@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 	char dev_path[128];
 	uint8_t i = 0;
 	char dev_buffer[256];
-	char temp_data[6];
+	char * temp_data;
 	ssize_t l_num_bytes;
 
 	if ((one_wire_dir = opendir(one_wire_path)) < 0)
@@ -73,7 +73,7 @@ int main(int argc, char **argv)
 	}
 	while(1)
 	{
-		while( fgets(fd[0], dev_buffer, 256) != NULL )
+		while( fgets(dev_buffer, fd[0]) != NULL )
 		{
 			if((temp_data = strstr(dev_buffer, "t=")) != NULL)
 			{
