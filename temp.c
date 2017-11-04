@@ -39,7 +39,12 @@ int main(int argc, char **argv)
 
 	while ((dirent = readdir(one_wire_dir)) != NULL)
 	{
-		printf("entry: %s", dirent->d_name);
+		printf("entry: %s\n", dirent->d_name);
+
+		if ( strstr(dirent->d_name, "28-") )
+		{
+			printf("Found the directory: %s", dirent->d_name);
+		}
 	}
 	/*
 	// find all the sensors one the one wire bus, max 5
