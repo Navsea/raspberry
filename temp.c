@@ -77,9 +77,9 @@ int main(int argc, char **argv)
 		while((l_num_bytes = read(fd[0], dev_buffer, 256)) > 0)
 		  {
 		   strncpy(temp_data, strstr(dev_buffer, "t=") + 2, 5);
+		   printf("temp_data: %s\n", temp_data);
 		   float tempC = strtof(temp_data, NULL);
-		   printf("Temp: %.3f C  ", tempC / 1000);
-		   printf("%.3f F\n\n", (tempC / 1000) * 9 / 5 + 32);
+		   printf("Temp: %.3f C  \n", tempC / 1000);
 		  }
 		/*
 		while( (l_num_bytes = read(fd[0], dev_buffer, 400)) > 0 )
