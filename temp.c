@@ -77,7 +77,7 @@ int main(int argc, char **argv)
 		while( (l_num_bytes = read(fd[0], dev_buffer, 256)) > 0 )
 		{
 			strncpy(temp_data, strstr(dev_buffer, "t=")+2, 5);
-			printf("device 0: %s\n", temp_data);
+			printf("device 0 bytes: %d\n device 0 temp: %s\n", l_num_bytes, temp_data);
 			rewind((FILE*)fd);
 		}
 		sleep(5);
