@@ -73,7 +73,7 @@ int main(int argc, char **argv)
 	}
 	while(1)
 	{
-		while( fgets(dev_buffer, fd[0]) != NULL )
+		while( fgets(dev_buffer, 256, fd[0]) != NULL )
 		{
 			if((temp_data = strstr(dev_buffer, "t=")) != NULL)
 			{
