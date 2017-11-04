@@ -8,6 +8,8 @@
 #include <errno.h>
 #include <stdint.h>
 #include <dirent.h>
+#include <string.h>
+#include <fcntl.h>
 
 static const char one_wire_path[] = "/sys/bus/w1/devices";
 
@@ -36,7 +38,7 @@ int main(int argc, char **argv)
 		// found a directory entry for "28-", which are the temp sensors of maxim
 		if ( (dirent->d_type == DT_LNK) && strstr(dirent->d_name, "28-") )
 		{
-			strcpy(dev_name[ls_curr_sensor], dirent->d_name);
+			strcpy(dev_name[ls_sensor_index], dirent->d_name);
 			ls_sensor_index++;
 		}
 	}
