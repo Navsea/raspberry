@@ -21,7 +21,7 @@ int main(int argc, char **argv)
 	struct dirent *dirent;
 	char dev_name[MAX_SENSORS][12];
 	static uint8_t ls_sensor_index;
-	int fd[MAX_SENSORS] = {0};
+	FILE *fd[MAX_SENSORS] = {NULL};
 	char dev_path[128];
 	uint8_t i = 0;
 	char dev_buffer[256];
@@ -56,6 +56,37 @@ int main(int argc, char **argv)
 
 	printf("Closed directory\n");
 
+	for(i = 0; i<ls_sensor_index; i++)
+	{
+		sprintf(dev_path, "%s/%s/w1_slave", one_wire_path, dev_name[i]);
+		printf("full path of device: %s\n", dev_path);
+
+		if ((fd[i] = fopen(dev_path, "r")) < 0)
+		{
+			printf("Unable to open sensor: %s\n \
+					Reason: %s\n", one_wire_path, strerror(errno));
+		}
+		else
+		{
+			printf("Successfully opened sensor path\n");
+		}
+	}
+	while(1)
+	{
+		while( fgets(fd[0], dev_buffer, 256) != NULL )
+		{
+			if((temp_data = strstr(dev_buffer, "t=")) != NULL)
+			{
+				temp_data += 2;
+			}
+			printf("device 0 temp: %s\n", temp_data);
+			rewind(fd[0]);
+		}
+		printf("Done\n");
+		sleep(5);
+	}
+
+	/*
 	// Open up the files for the sensor
 	for(i = 0; i<ls_sensor_index; i++)
 	{
@@ -77,11 +108,13 @@ int main(int argc, char **argv)
 		while( (l_num_bytes = read(fd[0], dev_buffer, 256)) > 0 )
 		{
 			strncpy(temp_data, strstr(dev_buffer, "t=")+2, 5);
-			printf("device 0 bytes: %d\n device 0 temp: %s\n", l_num_bytes, temp_data);
+			printf("device 0 bytes: %d\n"\
+					"device 0 temp: %s\n", l_num_bytes, temp_data);
 			lseek(fd, 0, SEEK_SET);
 		}
 		printf("Done\n");
 		sleep(5);
 	}
+	*/
 }
 
