@@ -62,7 +62,7 @@ int main(int argc, char **argv)
 		sprintf(dev_path, "%s/%s/w1_slave", one_wire_path, dev_name[i]);
 		printf("full path of device: %s\n", dev_path);
 
-		if ((fd[i] = open(dev_path, O_RDONLY)) < 0)
+		if ((fd[i] = (FILE*) open(dev_path, O_RDONLY)) < 0)
 		{
 			printf("Unable to open sensor: %s\n \
 					Reason: %s\n", one_wire_path, strerror(errno));
