@@ -57,6 +57,7 @@ int main(int argc, char **argv)
 
 	for(i = 0; i<ls_sensor_index; i++)
 	{
+		printf("device name %d: %s", i, dev_name[i]);
 		sprintf(dev_path[i], "%s/%s/w1_slave", one_wire_path, dev_name[i]);
 		printf("full path of device: %s\n", dev_path);
 
