@@ -113,9 +113,9 @@ int main(int argc, char **argv)
 	{
 		static int k = 1;
 
-		for(i=0; i<30; i++)
+		//for(i=0; i<30; i++)
 		{
-			printf("GPIO pin %d: %s\n", i, (GPIO_READ(i))?"ON":"OFF");
+			printf("GPIO pin %d: %s\n", 4, (GPIO_READ(4))?"ON":"OFF");
 		}
 
 		// Check the entire IO reg
