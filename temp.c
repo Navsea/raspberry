@@ -78,6 +78,7 @@ int main(int argc, char **argv)
 		{
 			strncpy(temp_data, strstr(dev_buffer, "t=")+2, 5);
 			printf("device 0: %s\n", temp_data);
+			rewind((FILE*)fd);
 		}
 		sleep(5);
 	}
