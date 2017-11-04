@@ -53,9 +53,12 @@ int main(int argc, char **argv)
 	// All sensors have been found, close the directory
 	closedir(one_wire_dir);
 
+	printf("Closed directory\n");
+
 	// Open up the files for the sensor
 	for(i = 0; i<ls_sensor_index; i++)
 	{
+		printf("For loop i = %s", i);
 		sprintf(dev_path, "%s/%s/w1_slave", one_wire_path, dev_name[i]);
 		printf("full path of device: %s", dev_path);
 
