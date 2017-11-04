@@ -44,7 +44,7 @@ int main(int argc, char **argv)
 		// found a directory entry for "28-", which are the temp sensors of maxim
 		if ( (dirent->d_type == DT_LNK) && strstr(dirent->d_name, "28-") )
 		{
-			strcpy(dev_name[ls_sensor_index], dirent->d_name);
+			strcpy(dev_name[ls_sensor_index], dirent->d_name + "/0");
 			printf("Found a maxim entry: %s\n", dev_name[ls_sensor_index]);
 			ls_sensor_index++;
 		}
@@ -57,7 +57,7 @@ int main(int argc, char **argv)
 
 	for(i = 0; i<ls_sensor_index; i++)
 	{
-		printf("device name %d: %s", i, dev_name[i]);
+		printf("device name %d: %s\n", i, dev_name[i]);
 		sprintf(dev_path[i], "%s/%s/w1_slave", one_wire_path, dev_name[i]);
 		printf("full path of device: %s\n", dev_path);
 
