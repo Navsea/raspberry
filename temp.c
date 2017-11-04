@@ -44,8 +44,8 @@ int main(int argc, char **argv)
 		// found a directory entry for "28-", which are the temp sensors of maxim
 		if ( (dirent->d_type == DT_LNK) && strstr(dirent->d_name, "28-") )
 		{
-			printf("Found a maxim entry: %s\n", dirent->d_name);
 			strcpy(dev_name[ls_sensor_index], dirent->d_name);
+			printf("Found a maxim entry: %s\n", dev_name[ls_sensor_index]);
 			ls_sensor_index++;
 		}
 	}
