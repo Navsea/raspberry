@@ -80,8 +80,8 @@ int main(int argc, char **argv)
 				temp_data += 2;
 			}
 			printf("device 0 temp: %s\n", temp_data);
-			rewind(fd[0]);
 		}
+		rewind(fd[0]);
 		printf("Done\n");
 		sleep(5);
 	}
