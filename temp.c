@@ -59,6 +59,7 @@ int main(int argc, char **argv)
 	for(i = 0; i<ls_sensor_index; i++)
 	{
 		printf("For loop i = %s", i);
+		/*
 		sprintf(dev_path, "%s/%s/w1_slave", one_wire_path, dev_name[i]);
 		printf("full path of device: %s", dev_path);
 
@@ -66,9 +67,9 @@ int main(int argc, char **argv)
 		{
 			printf("Unable to open sensor: %s\n \
 					Reason: %s\n", one_wire_path, strerror(errno));
-		}
+		}*/
 	}
-
+/*
 	while(1)
 	{
 		while( read(fd[0], dev_buffer, 256) > 0 )
@@ -77,6 +78,6 @@ int main(int argc, char **argv)
 			printf("device 0: %s", temp_data);
 		}
 		sleep(5);
-	}
+	}*/
 }
 
