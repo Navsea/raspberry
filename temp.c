@@ -32,12 +32,17 @@ int main(int argc, char **argv)
 		printf("Unable to open %s: %s\n", one_wire_path, strerror(errno));
 		return -1;
 	}
+	else
+	{
+		printf("Opened %s\n", one_wire_path);
+	}
 	// find all the sensors one the one wire bus, max 5
 	while( ((dirent = readdir(one_wire_dir) ) != NULL) && (ls_sensor_index < 5) )
 	{
 		// found a directory entry for "28-", which are the temp sensors of maxim
 		if ( (dirent->d_type == DT_LNK) && strstr(dirent->d_name, "28-") )
 		{
+			printf("Found an entry: %s", dirent->d_name);
 			strcpy(dev_name[ls_sensor_index], dirent->d_name);
 			ls_sensor_index++;
 		}
