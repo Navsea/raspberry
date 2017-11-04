@@ -74,7 +74,7 @@ int main(int argc, char **argv)
 	}
 	while(1)
 	{
-		printf("l_num_bytes: %s", fscanf(fd, "%s", "t="));
+		printf("l_num_bytes: %s", fscanf(fd[0], "%s", "t="));
 		/*
 		while( (l_num_bytes = read(fd[0], dev_buffer, 256)) > 0 )
 		{
