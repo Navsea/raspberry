@@ -58,9 +58,9 @@ int main(int argc, char **argv)
 	// Open up the files for the sensor
 	for(i = 0; i<ls_sensor_index; i++)
 	{
-		printf("For loop i = %s", i);
-		/*
+		printf("For loop i = %d", i);
 		sprintf(dev_path, "%s/%s/w1_slave", one_wire_path, dev_name[i]);
+		/*
 		printf("full path of device: %s", dev_path);
 
 		if ((fd[i] = open(dev_path, O_RDONLY)) < 0)
