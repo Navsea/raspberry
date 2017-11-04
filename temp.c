@@ -36,29 +36,30 @@ int main(int argc, char **argv)
 	{
 		printf("Opened %s\n", one_wire_path);
 	}
-
+/*
 	while ((dirent = readdir(one_wire_dir)) != NULL)
 	{
 		printf("entry: %s\n", dirent->d_name);
 
 		if ( strstr(dirent->d_name, "28-") )
 		{
-			printf("Found the directory: %s", dirent->d_name);
+			printf("Found the directory: %s\n", dirent->d_name);
 		}
 	}
-	/*
+	*/
 	// find all the sensors one the one wire bus, max 5
 	while( ((dirent = readdir(one_wire_dir) ) != NULL) && (ls_sensor_index < 5) )
 	{
+		printf("found an entry: %s\n", dirent->d_name);
 		// found a directory entry for "28-", which are the temp sensors of maxim
 		if ( (dirent->d_type == DT_LNK) && strstr(dirent->d_name, "28-") )
 		{
-			printf("Found an entry: %s", dirent->d_name);
+			printf("Found a maxim entry: %s", dirent->d_name);
 			strcpy(dev_name[ls_sensor_index], dirent->d_name);
 			ls_sensor_index++;
 		}
 	}
-
+/*
 	// All sensors have been found, close the directory
 	closedir(one_wire_dir);
 
