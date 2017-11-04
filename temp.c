@@ -21,7 +21,7 @@ int main(int argc, char **argv)
 	struct dirent *dirent;
 	char dev_name[MAX_SENSORS][12];
 	static uint8_t ls_sensor_index;
-	FILE * fd[MAX_SENSORS] = {NULL};
+	int fd[MAX_SENSORS] = {NULL};
 	char dev_path[128];
 	uint8_t i = 0;
 	char dev_buffer[256];
@@ -62,7 +62,7 @@ int main(int argc, char **argv)
 		sprintf(dev_path, "%s/%s/w1_slave", one_wire_path, dev_name[i]);
 		printf("full path of device: %s\n", dev_path);
 
-		if ((fd[i] = (FILE*) open(dev_path, O_RDONLY)) < 0)
+		if ((fd[i] = open(dev_path, O_RDONLY)) < 0)
 		{
 			printf("Unable to open sensor: %s\n \
 					Reason: %s\n", one_wire_path, strerror(errno));
@@ -74,14 +74,11 @@ int main(int argc, char **argv)
 	}
 	while(1)
 	{
-		printf("l_num_bytes: %s", fscanf(fd[0], "%s", "t="));
-		/*
-		while( (l_num_bytes = read(fd[0], dev_buffer, 256)) > 0 )
+		while( (l_num_bytes = read(fd[0], dev_buffer, 400)) > 0 )
 		{
 			strncpy(temp_data, strstr(dev_buffer, "t=")+2, 5);
 			printf("device 0: %s", temp_data);
 		}
-		*/
 		sleep(5);
 	}
 }
