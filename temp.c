@@ -21,7 +21,7 @@ int main(int argc, char **argv)
 	struct dirent *dirent;
 	char dev_name[MAX_SENSORS][12];
 	static uint8_t ls_sensor_index;
-	uint32_t fd[MAX_SENSORS] = {0};
+	unsigned int fd[MAX_SENSORS] = {0};
 	char dev_path[128];
 	uint8_t i = 0;
 	char dev_buffer[256];
@@ -58,15 +58,18 @@ int main(int argc, char **argv)
 	// Open up the files for the sensor
 	for(i = 0; i<ls_sensor_index; i++)
 	{
-		printf("For loop i = %d", i);
 		sprintf(dev_path, "%s/%s/w1_slave", one_wire_path, dev_name[i]);
 		printf("full path of device: %s", dev_path);
-		/*
+
 		if ((fd[i] = open(dev_path, O_RDONLY)) < 0)
 		{
 			printf("Unable to open sensor: %s\n \
 					Reason: %s\n", one_wire_path, strerror(errno));
-		}*/
+		}
+		else
+		{
+			printf("Successfully opened sensor path");
+		}
 	}
 /*
 	while(1)
