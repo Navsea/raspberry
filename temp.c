@@ -74,11 +74,15 @@ int main(int argc, char **argv)
 	}
 	while(1)
 	{
+		l_num_bytes = read(fd[0], dev_buffer, 256);
+		printf("l_num_bytes: %d", l_num_bytes);
+		/*
 		while( (l_num_bytes = read(fd[0], dev_buffer, 256)) > 0 )
 		{
 			strncpy(temp_data, strstr(dev_buffer, "t=")+2, 5);
 			printf("device 0: %s", temp_data);
 		}
+		*/
 		sleep(5);
 	}
 }
