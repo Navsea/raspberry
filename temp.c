@@ -38,7 +38,7 @@ int main(int argc, char **argv)
 		printf("Opened %s\n", one_wire_path);
 	}
 
-	// find all the sensors one the one wire bus, max 5
+	// find all the sensors one the one wire bus, max 3 (. and .. will aslo be matches)
 	while( ((dirent = readdir(one_wire_dir) ) != NULL) && (ls_sensor_index < 5) )
 	{
 		printf("found an entry: %s\n", dirent->d_name);
@@ -74,11 +74,20 @@ int main(int argc, char **argv)
 	}
 	while(1)
 	{
+		while((l_num_bytes = read(fd[0], dev_buffer, 256)) > 0)
+		  {
+		   strncpy(temp_data, strstr(dev_buffer, "t=") + 2, 5);
+		   float tempC = strtof(temp_data, NULL);
+		   printf("Temp: %.3f C  ", tempC / 1000);
+		   printf("%.3f F\n\n", (tempC / 1000) * 9 / 5 + 32);
+		  }
+		/*
 		while( (l_num_bytes = read(fd[0], dev_buffer, 400)) > 0 )
 		{
 			strncpy(temp_data, strstr(dev_buffer, "t=")+2, 5);
 			printf("device 0: %s", temp_data);
 		}
+		*/
 		sleep(5);
 	}
 }
