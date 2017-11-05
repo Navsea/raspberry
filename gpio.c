@@ -73,10 +73,6 @@ signed char gpio_initialize(void )
 		printf("Unable to open /dev/mem: %s\n", strerror(errno));
 		return GPIO_FAILURE;
 	}
-	else
-	{
-		printf("Opened /dev/mem");
-	}
 
 	s_gpio_pu32 = (uint32_t*)mmap(0, getpagesize(), PROT_READ | PROT_WRITE, MAP_SHARED, ls_device_mem_ps32, GPIO_BASE_ADDRESS);
 
