@@ -69,7 +69,7 @@ signed char gpio_initialize(void )
 
 	printf("initializing gpio");
 
-	return GPIO_SUCCESS
+	return GPIO_SUCCESS;
 	/*
 	// obtain handle to physical memory
 	if ( (ls_device_mem_ps32 = open("/dev/mem", O_RDWR | O_SYNC)) < 0 )
