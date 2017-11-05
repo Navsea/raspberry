@@ -65,16 +65,20 @@ static unsigned char s_initialized_u8;
 
 signed char gpio_initialize(void )
 {
-	unsigned int ls_device_mem_pu32;
+	int ls_device_mem_ps32;
 
+	printf("initializing gpio");
+
+	return GPIO_SUCCESS
+	/*
 	// obtain handle to physical memory
-	if ( (ls_device_mem_pu32 = open("/dev/mem", O_RDWR | O_SYNC)) < 0 )
+	if ( (ls_device_mem_ps32 = open("/dev/mem", O_RDWR | O_SYNC)) < 0 )
 	{
 		printf("Unable to open /dev/mem: %s\n", strerror(errno));
 		return GPIO_FAILURE;
 	}
 
-	s_gpio_pu32 = (uint32_t*)mmap(0, getpagesize(), PROT_READ | PROT_WRITE, MAP_SHARED, ls_device_mem_pu32, GPIO_BASE_ADDRESS);
+	s_gpio_pu32 = (uint32_t*)mmap(0, getpagesize(), PROT_READ | PROT_WRITE, MAP_SHARED, ls_device_mem_ps32, GPIO_BASE_ADDRESS);
 
 	if ( s_gpio_pu32 == MAP_FAILED )
 	{
@@ -87,6 +91,7 @@ signed char gpio_initialize(void )
 		s_initialized_u8 = 1;
 		return GPIO_SUCCESS;
 	}
+	*/
 }
 
 signed char gpio_set_function(unsigned char pin, fsel function)
