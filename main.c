@@ -13,6 +13,8 @@ int main(int argc, char **argv)
 
 	gpio_initialize();
 
+	printf("result of gpio_set(2): %d", gpio_set(2));
+
 	/*
 	while(1)
 	{
