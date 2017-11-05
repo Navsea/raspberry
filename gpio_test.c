@@ -34,7 +34,10 @@ int main(int argc, char **argv)
 		printf("gpio 2: %d\n", gpio_read(2));
 		printf("gpio 3: %d\n", gpio_read(3));
 		printf("gpio 4: %d\n", gpio_read(4));
-		printf("gpio 4 async rising edge: %d\n", gpio_event(4));
+		if ( gpio_event(4) )
+		{
+			printf("gpio 4 async rising edge: %d\n", gpio_event(4));
+		}
 
 		i = !i;
 		sleep(2);

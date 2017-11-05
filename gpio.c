@@ -156,7 +156,7 @@ signed char gpio_rising_edge_en(unsigned char pin, unsigned char enable)
 {
 	if ( s_initialized_u8 )
 	{
-		*(s_gpio_pu32 + REG_OFFSET_GPIO_REDGE_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) );
+		*(s_gpio_pu32 + REG_OFFSET_GPIO_REDGE_EN + (pin/32)) = (*(s_gpio_pu32 + REG_OFFSET_GPIO_REDGE_EN + (pin/32)) & ~(1 << (pin%31))) | (enable << (pin%31) );
 		return GPIO_SUCCESS;
 	}
 	else
@@ -169,7 +169,7 @@ signed char gpio_falling_edge_en(unsigned char pin, unsigned char enable)
 {
 	if ( s_initialized_u8 )
 	{
-		*(s_gpio_pu32 + REG_OFFSET_GPIO_FEDGE_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) );
+		*(s_gpio_pu32 + REG_OFFSET_GPIO_FEDGE_EN + (pin/32)) = ( *(s_gpio_pu32 + REG_OFFSET_GPIO_FEDGE_EN + (pin/32)) & ~(1 << (pin%31)) ) | (enable << (pin%31) );
 		return GPIO_SUCCESS;
 	}
 	else
@@ -182,7 +182,7 @@ signed char gpio_high_level_en(unsigned char pin, unsigned char enable)
 {
 	if ( s_initialized_u8 )
 	{
-		*(s_gpio_pu32 + REG_OFFSET_GPIO_HLEV_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) );
+		*(s_gpio_pu32 + REG_OFFSET_GPIO_HLEV_EN + (pin/32)) = ( *(s_gpio_pu32 + REG_OFFSET_GPIO_HLEV_EN + (pin/32)) & ~(1 << (pin%31)) ) | (enable << (pin%31) );
 		return GPIO_SUCCESS;
 	}
 	else
@@ -195,7 +195,7 @@ signed char gpio_low_level_en(unsigned char pin, unsigned char enable)
 {
 	if ( s_initialized_u8 )
 	{
-		*(s_gpio_pu32 + REG_OFFSET_GPIO_LLEV_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) );
+		*(s_gpio_pu32 + REG_OFFSET_GPIO_LLEV_EN + (pin/32)) = ( *(s_gpio_pu32 + REG_OFFSET_GPIO_LLEV_EN + (pin/32)) & ~(1 << (pin%31)) ) | (enable << (pin%31) );
 		return GPIO_SUCCESS;
 	}
 	else
@@ -208,7 +208,7 @@ signed char gpio_async_rising_edge_en(unsigned char pin, unsigned char enable)
 {
 	if ( s_initialized_u8 )
 	{
-		*(s_gpio_pu32 + REG_OFFSET_GPIO_AREDGE_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) );
+		*(s_gpio_pu32 + REG_OFFSET_GPIO_AREDGE_EN + (pin/32)) = ( *(s_gpio_pu32 + REG_OFFSET_GPIO_AREDGE_EN + (pin/32)) & ~(1 << (pin%31)) ) | (enable << (pin%31) );
 		return GPIO_SUCCESS;
 	}
 	else
@@ -221,7 +221,7 @@ signed char gpio_async_falling_edge_en(unsigned char pin, unsigned char enable)
 {
 	if ( s_initialized_u8 )
 	{
-		*(s_gpio_pu32 + REG_OFFSET_GPIO_AFEDGE_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) );
+		*(s_gpio_pu32 + REG_OFFSET_GPIO_AFEDGE_EN + (pin/32)) = (*(s_gpio_pu32 + REG_OFFSET_GPIO_AFEDGE_EN + (pin/32)) & ~(1 << (pin%31)) ) | (enable << (pin%31) );
 		return GPIO_SUCCESS;
 	}
 	else
