@@ -5,8 +5,8 @@
  *      Author: Kenneth
  */
 
-#ifndef GPIO_CLEAN_H_
-#define GPIO_CLEAN_H_
+#ifndef GPIO_H_
+#define GPIO_H_
 
 typedef enum fsel
 {
@@ -30,6 +30,9 @@ typedef enum gpio_pull
 #define GPIO_SUCCESS	1
 #define GPIO_FAILURE	-1
 
+// GPIO's: 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
+#define GPIO_ACCESSABLE_MASK (0b00111111111111111111111111110000)
+
 // map the phsyical memory into the virtual memory for us to use
 signed char gpio_initialize(void );
 signed char gpio_set_function(unsigned char pin, fsel function);
@@ -46,4 +49,4 @@ signed char gpio_async_falling_edge_en(unsigned char pin, unsigned char enable);
 signed char gpio_pull_up_down_set(gpio_pull pud);
 signed char gpio_pull_up_down_clk(unsigned char pin);
 
-#endif /* GPIO_CLEAN_H_ */
+#endif /* GPIO_H_ */

@@ -2,126 +2,256 @@
  * gpio.c
  *
  *  Created on: 31 okt. 2017
- *      Author: Kenneth
+ *      Author: Kenneth De Leener
  */
+#include "gpio.h"
+
 #include <fcntl.h>
+#include <stdio.h>
 #include <errno.h>
 #include <stdint.h>
-#include <stdio.h>
 #include <sys/mman.h>
-#include "gpio_defines.h"
+#include <stdlib.h>
 
-static volatile unsigned int *gpio;
+// The physical address of the first gpio register
+#define GPIO_BASE_ADDRESS (0x3F200000)
 
-// gpio register handling
-// Input handling does not work,
-#define GPIO_SET_FUNC(pin, func)		*(gpio + (pin/10)) = ( *(gpio + (pin/10)) & ~(7 << ((pin%10)*3)) )  | (func << ((pin%10)*3))
-#define GPIO_SET(pin)					*(gpio + REG_OFFSET_GPIO_SET + (pin/32)) |= (1 << (pin%31))
-#define GPIO_CLEAR(pin)					*(gpio + REG_OFFSET_GPIO_CLEAR + (pin/32)) |= (1 << (pin%31))
-#define GPIO_READ(pin)					(*(gpio + REG_OFFSET_GPIO_READ + (pin/32)) &= (1 << (pin%31))) >> (pin%31)
-#define GPIO_EVENT(pin)					(*(gpio + REG_OFFSET_GPIO_EVENT + (pin/32)) &= (1 << (pin%31))) >> (pin%31)
-#define GPIO_REDGE_EN(pin, enable)		*(gpio + REG_OFFSET_GPIO_REDGE_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) )
-#define GPIO_FEDGE_EN(pin, enable)		*(gpio + REG_OFFSET_GPIO_FEDGE_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) )
-#define GPIO_HLEV_EN(pin, enable)		*(gpio + REG_OFFSET_GPIO_HLEV_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) )
-#define GPIO_LLEV_EN(pin, enable)		*(gpio + REG_OFFSET_GPIO_LLEV_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) )
-#define GPIO_AREDGE_EN(pin, enable)		*(gpio + REG_OFFSET_GPIO_AREDGE_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) )
-#define GPIO_AFEDGE_EN(pin, enable)		*(gpio + REG_OFFSET_GPIO_AFEDGE_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) )
-// see BCM2835 spec to see how to use this, it's probably better to set multiple pins in one command --> TODO
-#define GPIO_PULL_CNTRL(pull)			*(gpio + REG_OFFSET_GPIO_PULL_CNTRL) = pull
-#define GPIO_PULL_CLK(pin)				*(gpio + REG_OFFSET_GPIO_EN_CLK + (pin/32)) |= (1 << pin%31)
+// function select register
+#define REG_OFFSET_ALT_FUNC				0		// 0x3F200000
+	// function select functions (can have different meanings depending on which register/io is used)
+	#define FSEL_INPUT		0
+	#define FSEL_OUTPUT		1
+	#define FSEL_ALT_0		4
+	#define FSEL_ALT_1		5
+	#define FSEL_ALT_2		6
+	#define FSEL_ALT_3		7
+	#define FSEL_ALT_4		3
+	#define FSEL_ALT_5		2
 
-int main(int argc, char **argv)
+// output state registers
+#define REG_OFFSET_GPIO_SET	 			7		// 0x3F20001C
+#define REG_OFFSET_GPIO_CLEAR			10		// 0x3F200028
+
+// input state registers
+#define REG_OFFSET_GPIO_READ			13		// 0x3F200034
+
+// event state registers
+#define REG_OFFSET_GPIO_EVENT			16		// 0x3F200040
+
+// edge detection enable register offsets (event reg will be set when detected)
+#define REG_OFFSET_GPIO_REDGE_EN		19		// 0x3F20004C
+#define REG_OFFSET_GPIO_FEDGE_EN		22		// 0x3F200058
+
+// level detection enable register offsets (event reg will be set when detected)
+#define REG_OFFSET_GPIO_HLEV_EN			25		// 0x3F200064
+#define REG_OFFSET_GPIO_LLEV_EN			28		// 0x3F200070
+
+// asynchronous edge detection register offsets (event reg will be set when detected)
+#define REG_OFFSET_GPIO_AREDGE_EN		31		// 0x3F20007C
+#define REG_OFFSET_GPIO_AFEDGE_EN		34		// 0x3F200088
+
+// pull up/down enable register offsets
+#define REG_OFFSET_GPIO_PULL_CNTRL		37		// 0x3F200094
+	#define PULL_NONE					0
+	#define PULL_DOWN					1
+	#define PULL_UP						2
+#define REG_OFFSET_GPIO_EN_CLK			38		// 0x3F20009C
+
+// global reference to the first of the gpio registers
+static volatile uint32_t *s_gpio_pu32;
+
+// indicating whether or not initialization is done
+static unsigned char s_initialized_u8;
+
+signed char gpio_initialize(void )
 {
-	int fd, i;
-	static unsigned char k = 0;
+	unsigned int ls_device_mem_pu32;
 
 	// obtain handle to physical memory
-	if ( (fd = open("/dev/mem", O_RDWR | O_SYNC)) < 0 )
+	if ( (ls_device_mem_pu32 = open("/dev/mem", O_RDWR | O_SYNC)) < 0 )
 	{
 		printf("Unable to open /dev/mem: %s\n", strerror(errno));
-		return -1;
+		return GPIO_FAILURE;
 	}
 
-	// map physical memory to virtual memory
-	printf("The pagesize is: %x\n", getpagesize());
-	gpio = (uint32_t*)mmap(0, getpagesize(), PROT_READ | PROT_WRITE, MAP_SHARED, fd, GPIO_BASE_ADDRESS);
+	s_gpio_pu32 = (uint32_t*)mmap(0, getpagesize(), PROT_READ | PROT_WRITE, MAP_SHARED, ls_device_mem_pu32, GPIO_BASE_ADDRESS);
 
-	if ( ((int32_t)gpio) <  0)
+	if ( s_gpio_pu32 == MAP_FAILED )
 	{
 		printf("mmap failed: %s\n", strerror(errno));
-		return -1;
+		return GPIO_FAILURE;
 	}
-
-	// Initialize io registers to outputs
-	for (i = 0; i < 30; i++)
+	else
 	{
-		GPIO_SET_FUNC(i, FSEL_INPUT);
-	}
-
-	//maybe wait
-	sleep(5);
-
-	// Set pull downs
-	GPIO_PULL_CNTRL(PULL_DOWN);
-	printf("Set pull cntrl reg, have to wait 150 cycles\n");
-	usleep(200);
-	*(gpio + REG_OFFSET_GPIO_EN_CLK) = (0xFFFFFFFF);
-	printf("Set pull clock reg, have to wait 150 cycles\n");
-	usleep(200);
-	GPIO_PULL_CNTRL(PULL_NONE);
-	*(gpio + REG_OFFSET_GPIO_EN_CLK) = (0);
-
-	// print function register
-	printf("gpio function select 0 address: %x\n", gpio);	// 76FF3000
-	printf("gpio function select 0 reg: %x\n", *gpio);
-
-	printf("gpio function select 1 address: %x\n", gpio+1);	// 76FF3000
-	printf("gpio function select 1 reg: %x\n", *(gpio+1));
-
-	printf("gpio function select 2 address: %x\n", gpio+2);	// 76FF3000
-	printf("gpio function select 2 reg: %x\n", *(gpio+2));
-
-	printf("gpio function select 3 address: %x\n", gpio+3);	// 76FF3000
-	printf("gpio function select 3 reg: %x\n", *(gpio+3));
-
-	printf("gpio function select 4 address: %x\n", gpio+4);	// 76FF3000
-	printf("gpio function select 4 reg: %x\n", *(gpio+4));
-
-	printf("gpio function select 5 address: %x\n", gpio+5);	// 76FF3000
-	printf("gpio function select 5 reg: %x\n", *(gpio+5));
-
-	// print set register
-	printf("gpio set address: %x\n", (gpio+REG_OFFSET_GPIO_SET));	// 76FF301C
-	printf("gpio set reg: %x\n", *(gpio+REG_OFFSET_GPIO_SET));
-
-	// print clear register
-	printf("gpio clear address: %x\n", (gpio+REG_OFFSET_GPIO_CLEAR));	// 76FF3028
-	printf("gpio clear reg: %x\n", *(gpio+REG_OFFSET_GPIO_CLEAR));
-
-	// print read register
-	printf("gpio read address: %x\n", (gpio+REG_OFFSET_GPIO_READ));		// 76FF3034
-	printf("gpio read reg: %x\n", *(gpio+REG_OFFSET_GPIO_READ));
-
-	// print event register
-	printf("gpio event address: %x\n", (gpio+REG_OFFSET_GPIO_EVENT));	// 76FF3040
-	printf("pgio event reg: %x\n", *(gpio+REG_OFFSET_GPIO_EVENT));
-
-	fflush(stdout);
-
-	// do something forever
-	while(1)
-	{
-		static int k = 1;
-
-		//for(i=0; i<30; i++)
-		{
-			printf("GPIO pin %d: %s\n", 4, (GPIO_READ(4))?"ON":"OFF");
-		}
-
-		// Check the entire IO reg
-		printf("The whole read reg: %x\n", ((uint32_t)*(gpio + REG_OFFSET_GPIO_READ)));		//2ffaebef 10051410
-
-		sleep(1);
+		printf("mmap success");
+		s_initialized_u8 = 1;
+		return GPIO_SUCCESS;
 	}
 }
 
+signed char gpio_set_function(unsigned char pin, fsel function)
+{
+	if ( s_initialized_u8 )
+	{
+		*(s_gpio_pu32 + (pin/10)) = ( *(s_gpio_pu32 + (pin/10)) & ~(7 << ((pin%10)*3)) )  | (function << ((pin%10)*3));
+		return GPIO_SUCCESS;
+	}
+	else
+	{
+		return GPIO_FAILURE;
+	}
+}
+
+signed char gpio_set(unsigned char pin)
+{
+	if ( s_initialized_u8 )
+	{
+		*(s_gpio_pu32 + REG_OFFSET_GPIO_SET + (pin/32)) |= (1 << (pin%31));
+		return GPIO_SUCCESS;
+	}
+	else
+	{
+		return GPIO_FAILURE;
+	}
+}
+
+signed char gpio_clear(unsigned char pin)
+{
+	if ( s_initialized_u8 )
+	{
+		*(s_gpio_pu32 + REG_OFFSET_GPIO_CLEAR + (pin/32)) |= (1 << (pin%31));
+		return GPIO_SUCCESS;
+	}
+	else
+	{
+		return GPIO_FAILURE;
+	}
+}
+
+signed char gpio_read(unsigned char pin)
+{
+	if ( s_initialized_u8 )
+	{
+		return ((*(s_gpio_pu32 + REG_OFFSET_GPIO_READ + (pin/32)) &= (1 << (pin%31))) >> (pin%31));
+	}
+	else
+	{
+		return GPIO_FAILURE;
+	}
+}
+
+signed char gpio_event(unsigned char pin)
+{
+	if ( s_initialized_u8 )
+	{
+		return ((*(s_gpio_pu32 + REG_OFFSET_GPIO_EVENT + (pin/32)) &= (1 << (pin%31))) >> (pin%31));
+	}
+	else
+	{
+		return GPIO_FAILURE;
+	}
+}
+
+signed char gpio_rising_edge_en(unsigned char pin, unsigned char enable)
+{
+	if ( s_initialized_u8 )
+	{
+		*(s_gpio_pu32 + REG_OFFSET_GPIO_REDGE_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) );
+		return GPIO_SUCCESS;
+	}
+	else
+	{
+		return GPIO_FAILURE;
+	}
+}
+
+signed char gpio_falling_edge_en(unsigned char pin, unsigned char enable)
+{
+	if ( s_initialized_u8 )
+	{
+		*(s_gpio_pu32 + REG_OFFSET_GPIO_FEDGE_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) );
+		return GPIO_SUCCESS;
+	}
+	else
+	{
+		return GPIO_FAILURE;
+	}
+}
+
+signed char gpio_high_level_en(unsigned char pin, unsigned char enable)
+{
+	if ( s_initialized_u8 )
+	{
+		*(s_gpio_pu32 + REG_OFFSET_GPIO_HLEV_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) );
+		return GPIO_SUCCESS;
+	}
+	else
+	{
+		return GPIO_FAILURE;
+	}
+}
+
+signed char gpio_low_level_en(unsigned char pin, unsigned char enable)
+{
+	if ( s_initialized_u8 )
+	{
+		*(s_gpio_pu32 + REG_OFFSET_GPIO_LLEV_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) );
+		return GPIO_SUCCESS;
+	}
+	else
+	{
+		return GPIO_FAILURE;
+	}
+}
+
+signed char gpio_async_rising_edge_en(unsigned char pin, unsigned char enable)
+{
+	if ( s_initialized_u8 )
+	{
+		*(s_gpio_pu32 + REG_OFFSET_GPIO_AREDGE_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) );
+		return GPIO_SUCCESS;
+	}
+	else
+	{
+		return GPIO_FAILURE;
+	}
+}
+
+signed char gpio_async_falling_edge_en(unsigned char pin, unsigned char enable)
+{
+	if ( s_initialized_u8 )
+	{
+		*(s_gpio_pu32 + REG_OFFSET_GPIO_AFEDGE_EN + (pin/32)) &= ( ~(1 << (pin%31)) | (enable << ((pin%31))) );
+		return GPIO_SUCCESS;
+	}
+	else
+	{
+		return GPIO_FAILURE;
+	}
+}
+
+signed char gpio_pull_up_down_set(gpio_pull pud)
+{
+	if ( s_initialized_u8 )
+	{
+		*(s_gpio_pu32 + REG_OFFSET_GPIO_PULL_CNTRL) = pud;
+		return GPIO_SUCCESS;
+	}
+	else
+	{
+		return GPIO_FAILURE;
+	}
+}
+
+signed char gpio_pull_up_down_clk(unsigned char pin)
+{
+	if ( s_initialized_u8 )
+	{
+		*(s_gpio_pu32 + REG_OFFSET_GPIO_EN_CLK + (pin/32)) |= (1 << pin%31);
+		return GPIO_SUCCESS;
+	}
+	else
+	{
+		return GPIO_FAILURE;
+	}
+}
