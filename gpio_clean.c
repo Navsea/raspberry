@@ -5,6 +5,8 @@
  *      Author: Kenneth De Leener
  */
 #include <stdio.h>
+#include <errno.h>
+#include <stdint.h>
 #include <sys/mman.h>
 #include <stdlib.h>
 #include "gpio_clean.h"
