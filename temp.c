@@ -56,6 +56,11 @@ int main(int argc, char **argv)
 
 	printf("Closed directory\n");
 
+	for ( i = 0; i < 2; i++ )
+	{
+		printf("device name check again: %x\n", dev_name[i]);
+	}
+
 	for(i = 0; i<ls_sensor_index; i++)
 	{
 		printf("device name %d: %s\n", i, dev_name[i]);
