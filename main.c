@@ -14,18 +14,24 @@ int main(int argc, char **argv)
 
 	gpio_initialize();
 	gpio_set_function(2, FSEL_OUTPUT);
+	gpio_set_function(3, FSEL_INPUT);
 
 	while(1)
 	{
+		// This toggles gpio 2
 		if(i == 0)
 		{
-			printf("Gpio 2 set result: %d\n", gpio_set(2));
-
+			gpio_set(2);
 		}
 		else
 		{
-			printf("Gpio 2 clear result: %d\n", gpio_clear(2));
+			gpio_clear(2);
 		}
+
+		// this reads the output gpio2 and input gpio3
+		printf("gpio 2: %d", gpio_read(2));
+		printf("gpio 3: %d", gpio_read(3));
+
 		i = !i;
 		sleep(2);
 	}
