@@ -29,8 +29,8 @@ int main(int argc, char **argv)
 		}
 
 		// this reads the output gpio2 and input gpio3
-		printf("gpio 2: %d", gpio_read(2));
-		printf("gpio 3: %d", gpio_read(3));
+		printf("gpio 2: %d\n", gpio_read(2));
+		printf("gpio 3: %d\n", gpio_read(3));
 
 		i = !i;
 		sleep(2);
