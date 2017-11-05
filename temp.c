@@ -64,14 +64,14 @@ int main(int argc, char **argv)
 		if ((fd[i] = fopen(dev_path[i], "r")) != NULL)
 		{
 			printf("Unable to open sensor: %s\n \
-					Reason: %s\n", one_wire_path, strerror(errno));
+					Reason: %s\n", dev_path[i], strerror(errno));
 		}
 		else
 		{
 			printf("Successfully opened sensor path\n");
 		}
 	}
-	/*
+
 	while(1)
 	{
 		for (i = 0; i <ls_sensor_index; i++)
@@ -88,6 +88,6 @@ int main(int argc, char **argv)
 		}
 		printf("Done\n");
 		sleep(5);
-	}*/
+	}
 }
 
