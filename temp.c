@@ -81,8 +81,7 @@ int main(int argc, char **argv)
 				if((temp_data = strstr(dev_buffer, "t=")) != NULL)
 				{
 					temp_data += 2;
-					// \370 is the ascii code for °
-					printf("device %d Temp(°\370C): %s\n", i, temp_data);
+					printf("device %d Temp(C): %s\n", i, temp_data);
 				}
 			}
 			rewind(fd[i]);
