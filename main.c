@@ -14,20 +14,18 @@ int main(int argc, char **argv)
 
 	gpio_initialize();
 
-	printf("result of gpio_set(2): %d", gpio_set(2));
-
-	/*
 	while(1)
 	{
 		if(i == 0)
 		{
-			gpio_set(2);
+			printf("Gpio 2 set result: %d", gpio_set(2));
+
 		}
 		else
 		{
-			gpio_clear(2);
+			printf("Gpio 2 clear result: %d", gpio_clear(2));
 		}
 		i = !i;
 		sleep(2);
-	}*/
+	}
 }
