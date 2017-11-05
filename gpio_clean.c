@@ -118,7 +118,7 @@ signed char gpio_clear(unsigned char pin)
 {
 	if ( s_initialized_u8 )
 	{
-		*(s_gpio_pu32 + REG_OFFSET_GPIO_CLEAR + (pin/32)) |= (1 << (pin%31))
+		*(s_gpio_pu32 + REG_OFFSET_GPIO_CLEAR + (pin/32)) |= (1 << (pin%31));
 		return GPIO_SUCCESS;
 	}
 	else
@@ -246,7 +246,7 @@ signed char gpio_pull_up_down_clk(unsigned char pin)
 {
 	if ( s_initialized_u8 )
 	{
-		*(s_gpio_pu32 + REG_OFFSET_GPIO_EN_CLK + (pin/32)) |= (1 << pin%31)
+		*(s_gpio_pu32 + REG_OFFSET_GPIO_EN_CLK + (pin/32)) |= (1 << pin%31);
 		return GPIO_SUCCESS;
 	}
 	else
