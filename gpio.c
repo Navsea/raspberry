@@ -83,7 +83,7 @@ signed char gpio_initialize(void )
 	}
 	else
 	{
-		printf("mmap success");
+		printf("mmap success!\n");
 		s_initialized_u8 = 1;
 		return GPIO_SUCCESS;
 	}
