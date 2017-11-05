@@ -19,7 +19,7 @@ int main(int argc, char **argv)
 {
 	DIR *one_wire_dir;
 	struct dirent *dirent;
-	char dev_name[MAX_SENSORS][12];
+	char dev_name[MAX_SENSORS][16];
 	static uint8_t ls_sensor_index;
 	FILE *fd[MAX_SENSORS] = {NULL};
 	char dev_path[MAX_SENSORS][64];
@@ -44,7 +44,6 @@ int main(int argc, char **argv)
 		// found a directory entry for "28-", which are the temp sensors of maxim
 		if ( (dirent->d_type == DT_LNK) && strstr(dirent->d_name, "28-") )
 		{
-			strcat(dirent->d_name, "\0");
 			strcpy(dev_name[ls_sensor_index], dirent->d_name);
 			printf("Found a maxim entry: %s\n", dev_name[ls_sensor_index]);
 			ls_sensor_index++;
