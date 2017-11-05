@@ -13,6 +13,7 @@ int main(int argc, char **argv)
 	int i = 0;
 
 	gpio_initialize();
+	gpio_set_function(2, FSEL_OUTPUT);
 
 	while(1)
 	{
