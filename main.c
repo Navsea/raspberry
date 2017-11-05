@@ -13,7 +13,6 @@ int main(int argc, char **argv)
 
 	gpio_initialize();
 
-	/*
 	while(1)
 	{
 		if(i == 0)
@@ -27,5 +26,4 @@ int main(int argc, char **argv)
 		i = !i;
 		sleep(2);
 	}
-	*/
 }
