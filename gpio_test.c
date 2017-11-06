@@ -40,7 +40,7 @@ int main(int argc, char **argv)
 	gpio_pull_up_down_set(PULL_NONE);
 	gpio_pull_up_down_clk(0);
 
-	gpio_pull_up_down_set(PULL_DOWN);		// preparing to set up a pull up resistor
+	gpio_pull_up_down_set(PULL_DOWN);	// preparing to set up a pull up resistor
 	usleep(150);
 	gpio_pull_up_down_clk(11);			// clocking data into pin 10
 	usleep(150);
@@ -60,15 +60,19 @@ int main(int argc, char **argv)
 			gpio_clear(2);
 		}
 
-		for(i = 2; i < 6; i++)
+		for(i = 2; i < 12; i++)
 		{
 			printf("gpio %d: %d\n", i, gpio_read(2));
 		}
 
-		// TODO
 		printf("gpio 4 rising edge: %d\n", gpio_event(4));
 		printf("gpio 5 falling edge: %d\n", gpio_event(5));
-		printf("gpio 6 falling edge: %d\n", gpio_event(6));
+		printf("gpio 6 high level: %d\n", gpio_event(6));
+		printf("gpio 7 low level: %d\n", gpio_event(7));
+		printf("gpio 8 async rising edge: %d\n", gpio_event(8));
+		printf("gpio 9 async falling edge: %d\n", gpio_event(9));
+		printf("gpio 10 should be high (pull up)");
+		printf("gpio 11 should be high (pull down)");
 
 		i = !i;
 		sleep(2);
