@@ -13,6 +13,7 @@ int main(int argc, char **argv)
 	int i = 0;
 
 	gpio_initialize();
+
 	gpio_set_function(2, FSEL_OUTPUT);	// should toggle
 	gpio_set_function(3, FSEL_INPUT);	// should read whatever is connected, also clears events
 	gpio_set_function(4, FSEL_INPUT);	// should detect rising edges
@@ -30,6 +31,15 @@ int main(int argc, char **argv)
 	gpio_low_level_en(7,1);				// enabling low level detection on pin 7
 	gpio_async_rising_edge_en(8, 1);	// enabling async rising edge detection on pin 8
 	gpio_async_falling_edge_en(9, 1);	// enabling async falling edge detection on pin 9
+
+	gpio_pull_up_down_set(PULL_DOWN);	// preparing to set up a pull down resistor
+	usleep(150);
+	gpio_pull_up_down_clk(3);			// clocking data into pin 3
+	usleep(150);
+
+	// not sure if this is necessary when you will use it again, when they describe how to use it they say to do so
+	gpio_pull_up_down_set(PULL_NONE);
+	gpio_pull_up_down_clk(0);
 
 	gpio_pull_up_down_set(PULL_UP);		// preparing to set up a pull up resistor
 	usleep(150);
