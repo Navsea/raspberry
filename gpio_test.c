@@ -87,13 +87,14 @@ int main(int argc, char **argv)
 		printf("gpio 10 should be high (pull up)\n");
 		printf("gpio 11 should be low (pull down)\n");
 
+		/*
 		if ( gpio_read(3) )
 		{
 			for( i=0; i < 12; i++ )
 			{
 				gpio_event_clear(i);
 			}
-		}
+		}*/
 
 		i = !i;
 		sleep(2);
