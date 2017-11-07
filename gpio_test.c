@@ -15,7 +15,7 @@ int main(int argc, char **argv)
 	gpio_initialize();
 
 	gpio_set_function(2, FSEL_OUTPUT);	// should toggle
-	gpio_set_function(3, FSEL_INPUT);	// should read whatever is connected, also clears events
+	gpio_set_function(3, FSEL_INPUT);	// should read whatever is connected
 	gpio_set_function(4, FSEL_INPUT);	// should detect rising edges
 	gpio_set_function(5, FSEL_INPUT);	// should detect falling edges
 	gpio_set_function(6, FSEL_INPUT);	// should detect high level
@@ -24,6 +24,7 @@ int main(int argc, char **argv)
 	gpio_set_function(9, FSEL_INPUT);	// should detect async falling edges
 	gpio_set_function(10, FSEL_INPUT);	// should have a pull up
 	gpio_set_function(11, FSEL_INPUT);	// should have a pull down
+	gpio_set_function(12, FSEL_INPUT);	// should clear the event register
 
 	gpio_rising_edge_en(4, 1);			// enabling rising edge detection on pin 4
 	gpio_falling_edge_en(5, 1);			// enabling falling edge detection on pin 5
@@ -73,7 +74,7 @@ int main(int argc, char **argv)
 			gpio_clear(2);
 		}
 
-		for(i = 2; i < 12; i++)
+		for(i = 2; i < 13; i++)
 		{
 			printf("gpio %d: %d\n", i, gpio_read(i));
 		}
@@ -86,15 +87,15 @@ int main(int argc, char **argv)
 		printf("gpio 9 async falling edge: %d\n", gpio_event(9));
 		printf("gpio 10 should be high (pull up)\n");
 		printf("gpio 11 should be low (pull down)\n");
+		printf("gpio 12 should clear the event register\n");
 
-		/*
-		if ( gpio_read(3) )
+		if ( gpio_read(12) )
 		{
 			for( i=0; i < 12; i++ )
 			{
 				gpio_event_clear(i);
 			}
-		}*/
+		}
 
 		i = !i;
 		sleep(2);
