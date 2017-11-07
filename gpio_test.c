@@ -14,7 +14,7 @@ int main(int argc, char **argv)
 
 	gpio_initialize();
 	gpio_set_function(2, FSEL_OUTPUT);	// should toggle
-	gpio_set_function(3, FSEL_INPUT);	// should read whatever is connected
+	gpio_set_function(3, FSEL_INPUT);	// should read whatever is connected, also clears events
 	gpio_set_function(4, FSEL_INPUT);	// should detect rising edges
 	gpio_set_function(5, FSEL_INPUT);	// should detect falling edges
 	gpio_set_function(6, FSEL_INPUT);	// should detect high level
@@ -40,9 +40,9 @@ int main(int argc, char **argv)
 	gpio_pull_up_down_set(PULL_NONE);
 	gpio_pull_up_down_clk(0);
 
-	gpio_pull_up_down_set(PULL_DOWN);	// preparing to set up a pull up resistor
+	gpio_pull_up_down_set(PULL_DOWN);	// preparing to set up a pull down resistor
 	usleep(150);
-	gpio_pull_up_down_clk(11);			// clocking data into pin 10
+	gpio_pull_up_down_clk(11);			// clocking data into pin 11
 	usleep(150);
 
 	gpio_pull_up_down_set(PULL_NONE);
@@ -71,8 +71,16 @@ int main(int argc, char **argv)
 		printf("gpio 7 low level: %d\n", gpio_event(7));
 		printf("gpio 8 async rising edge: %d\n", gpio_event(8));
 		printf("gpio 9 async falling edge: %d\n", gpio_event(9));
-		printf("gpio 10 should be high (pull up)");
-		printf("gpio 11 should be high (pull down)");
+		printf("gpio 10 should be high (pull up)\n");
+		printf("gpio 11 should be low (pull down)\n");
+
+		if ( gpio_read(3) )
+		{
+			for( i=0; i < 12; i++ )
+			{
+				gpio_event_clear(i);
+			}
+		}
 
 		i = !i;
 		sleep(2);

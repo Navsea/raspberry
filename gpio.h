@@ -40,6 +40,7 @@ signed char gpio_set(unsigned char pin);
 signed char gpio_clear(unsigned char pin);
 signed char gpio_read(unsigned char pin);
 signed char gpio_event(unsigned char pin);
+signed char gpio_event_clear(unsigned char pin);
 signed char gpio_rising_edge_en(unsigned char pin, unsigned char enable);
 signed char gpio_falling_edge_en(unsigned char pin, unsigned char enable);
 signed char gpio_high_level_en(unsigned char pin, unsigned char enable);

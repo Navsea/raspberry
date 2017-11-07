@@ -132,7 +132,7 @@ signed char gpio_read(unsigned char pin)
 {
 	if ( s_initialized_u8 )
 	{
-		return ((*(s_gpio_pu32 + REG_OFFSET_GPIO_READ + (pin/32)) &= (1 << (pin%31))) >> (pin%31));
+		return ((*(s_gpio_pu32 + REG_OFFSET_GPIO_READ + (pin/32)) & (1 << (pin%31))) >> (pin%31));
 	}
 	else
 	{
@@ -144,7 +144,20 @@ signed char gpio_event(unsigned char pin)
 {
 	if ( s_initialized_u8 )
 	{
-		return ((*(s_gpio_pu32 + REG_OFFSET_GPIO_EVENT + (pin/32)) &= (1 << (pin%31))) >> (pin%31));
+		return ((*(s_gpio_pu32 + REG_OFFSET_GPIO_EVENT + (pin/32)) & (1 << (pin%31))) >> (pin%31));
+	}
+	else
+	{
+		return GPIO_FAILURE;
+	}
+}
+
+signed char gpio_event_clear(unsigned char pin)
+{
+	if ( s_initialized_u8 )
+	{
+		*(s_gpio_pu32 + REG_OFFSET_GPIO_EVENT + (pin/32)) |= (1 << (pin%31));
+		return GPIO_SUCCESS;
 	}
 	else
 	{
