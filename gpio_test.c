@@ -40,6 +40,7 @@ int main(int argc, char **argv)
 	// not sure if this is necessary when you will use it again, when they describe how to use it they say to do so
 	gpio_pull_up_down_set(PULL_NONE);
 	gpio_pull_up_down_clk(0);
+	usleep(150);
 
 	gpio_pull_up_down_set(PULL_UP);		// preparing to set up a pull up resistor
 	usleep(150);
@@ -49,6 +50,7 @@ int main(int argc, char **argv)
 	// not sure if this is necessary when you will use it again, when they describe how to use it they say to do so
 	gpio_pull_up_down_set(PULL_NONE);
 	gpio_pull_up_down_clk(0);
+	usleep(150);
 
 	gpio_pull_up_down_set(PULL_DOWN);	// preparing to set up a pull down resistor
 	usleep(150);
@@ -57,6 +59,7 @@ int main(int argc, char **argv)
 
 	gpio_pull_up_down_set(PULL_NONE);
 	gpio_pull_up_down_clk(0);
+	usleep(150);
 
 	while(1)
 	{
