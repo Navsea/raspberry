@@ -62,7 +62,7 @@ int main(int argc, char **argv)
 
 		for(i = 2; i < 12; i++)
 		{
-			printf("gpio %d: %d\n", i, gpio_read(2));
+			printf("gpio %d: %d\n", i, gpio_read(i));
 		}
 
 		printf("gpio 4 rising edge: %d\n", gpio_event(4));
