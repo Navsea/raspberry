@@ -9,5 +9,6 @@
 
 void main(int argc, char *argv[] )
 {
-	setup_client(argv[1], 443);
+	setup_server(argv[1], 80);
+	setup_client(argv[1], 80);
 }
