@@ -53,7 +53,8 @@ char setup_client(char * ip_address, uint32_t port )
 	connect(client_socket, (struct sockaddr *) &remote_address, sizeof(remote_address));
 
 	send(client_socket, request, sizeof(request), 0);
-	recv(client_socket, response, sizeof(response), 0);
+
+	while(recv(client_socket, response, sizeof(response), 0));
 
 	printf("client received server response: %s\n", response);
 	close(client_socket);
