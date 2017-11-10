@@ -16,10 +16,10 @@ char setup_client(char * ip_address, uint32_t port )
 {
 	int32_t client_socket;
 	struct sockaddr_in remote_address;
-	char request[] = "GET / HTTP/1.1\r\n\n";
+	char request[] = "yoyo probeersel";//"GET / HTTP/1.1\r\n\n";
 	char response[4096] = {0};
 
-	client_socket = socket(AF_INET, SOCK_STREAM, 0);
+	client_socket = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);
 
 	printf("Selected ip address: %s\n", ip_address);
 	printf("Selected port: %d\n", port);
@@ -55,7 +55,7 @@ char setup_client(char * ip_address, uint32_t port )
 	send(client_socket, request, sizeof(request), 0);
 	recv(client_socket, response, sizeof(response), 0);
 
-	printf("Response: %s", response);
+	printf("client received server response: %s", response);
 	close(client_socket);
 
 	return NETWORK_SUCCESS;

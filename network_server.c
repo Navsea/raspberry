@@ -103,7 +103,7 @@ char setup_server(char * ip_address, uint32_t port )
 		}
 
 		recv(client_socket, &buffer, sizeof(buffer), 0);
-		printf("received: %s\n", buffer);
+		printf("server received client req: %s\n", buffer);
 	}
 
 	return NETWORK_SUCCESS;
