@@ -76,7 +76,6 @@ char setup_server(char * ip_address, uint32_t port )
 
 	while(1)
 	{
-		/*
 		switch( poll(&network_socket_poll, 1, 60000) )
 		{
 		case 0:
@@ -94,7 +93,8 @@ char setup_server(char * ip_address, uint32_t port )
 			}
 		break;
 		}
-	*/
+
+		/*
 		client_socket = accept(server_socket, 0, 0);
 
 		if ( client_socket == EAGAIN )
@@ -106,7 +106,7 @@ char setup_server(char * ip_address, uint32_t port )
 
 		recv(client_socket, &buffer, sizeof(buffer), 0);
 		printf("server received client req: %s\n", buffer);
-		return NETWORK_SUCCESS;
+		*/
 	}
 }
 
