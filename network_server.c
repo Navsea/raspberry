@@ -82,7 +82,7 @@ char setup_server(char * ip_address, uint32_t port )
 			printf("poll has timed out\n");
 			break;
 		case -1:
-			printf(" A poll error has occurred: %s", strerr(errno));
+			printf(" A poll error has occurred: %s", strerror(errno));
 			break;
 		default:
 			if (network_socket_poll.revents & POLLIN)
