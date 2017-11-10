@@ -16,7 +16,7 @@ char setup_client(char * ip_address, uint32_t port )
 {
 	int32_t client_socket;
 	struct sockaddr_in remote_address;
-	char request[] = "Give me page";//"GET / HTTP/1.1\r\n\n";
+	char request[] = "GIVE";//"GET / HTTP/1.1\r\n\n";
 	char response[4096] = {0};
 
 	client_socket = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);

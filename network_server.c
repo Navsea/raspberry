@@ -100,9 +100,13 @@ char setup_server(char * ip_address, uint32_t port )
 				recv(client_socket, &buffer, sizeof(buffer), 0);
 				printf("received: %s\n", buffer);
 				// found command
-				if ( !strcmp(buffer, "Give me page")  )
+				if ( !strcmp(buffer, "GIVE")  )
 				{
 					send(client_socket, html_response, sizeof(html_response), 0);
+				}
+				else
+				{
+					printf("Result of strcmp: %d\n", strcmp(buffer, "GIVE"));
 				}
 			}
 			return 0;
