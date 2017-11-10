@@ -21,6 +21,9 @@ char setup_client(char * ip_address, uint32_t port )
 
 	client_socket = socket(AF_INET, SOCK_STREAM, 0);
 
+	printf("Selected ip address: %s\n", ip_address);
+	printf("Selected port: %d\n", port);
+
 	if ( client_socket < 0 )
 	{
 		printf("Opening socket failed: %s\n", strerror(errno));
