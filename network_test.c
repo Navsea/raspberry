@@ -6,7 +6,6 @@
  */
 
 #include "network.h"
-#include <stdint.h>
 
 void main(int argc, char *argv[] )
 {

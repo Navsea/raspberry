@@ -5,6 +5,7 @@
  *      Author: Kenneth
  */
 #include <sys/socket.h>
+#include <stdint.h>
 #include "network.h"
 
 char setup_client(char * ip_address, uint32_t port )
