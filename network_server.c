@@ -85,7 +85,7 @@ char setup_server(char * ip_address, uint32_t port )
 			printf(" A poll error has occurred: %s", strerr(errno));
 			break;
 		default:
-			if (network_socket_poll.revents & POLL_IN)
+			if (network_socket_poll.revents & POLLIN)
 			{
 				client_socket = accept(server_socket, 0, 0);
 				recv(client_socket, &buffer, sizeof(buffer), 0);
