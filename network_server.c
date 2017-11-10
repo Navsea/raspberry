@@ -11,6 +11,7 @@
 #include <arpa/inet.h>
 #include <sys/poll.h>
 #include <stdint.h>
+#include <stdio.h>
 #include "network.h"
 
 char setup_server(char * ip_address, uint32_t port )
