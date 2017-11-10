@@ -22,7 +22,7 @@ char setup_server(char * ip_address, uint32_t port )
 	struct pollfd network_socket_poll;
 	char buffer[256];
 
-	server_socket = socket(AF_INET, SOCK_STREAM, 0);
+	server_socket = socket(AF_INET, SOCK_STREAM, SOCK_NONBLOCK);
 
 	if ( server_socket < 0 )
 	{
@@ -57,7 +57,7 @@ char setup_server(char * ip_address, uint32_t port )
 	}
 	else
 	{
-		printf("Successfully binded server address to socket");
+		printf("Successfully binded server address to socket\n");
 	}
 
 	if (listen(server_socket, 1) < 0)
@@ -76,24 +76,34 @@ char setup_server(char * ip_address, uint32_t port )
 
 	while(1)
 	{
+		/*
 		switch( poll(&network_socket_poll, 1, 60000) )
 		{
 		case 0:
 			printf("poll has timed out\n");
 			break;
 		case -1:
-			printf(" A poll error has occurred: %s", strerror(errno));
+			printf(" A poll error has occurred: %s\n", strerror(errno));
 			break;
 		default:
 			if (network_socket_poll.revents & POLLIN)
 			{
 				client_socket = accept(server_socket, 0, 0);
 				recv(client_socket, &buffer, sizeof(buffer), 0);
-				printf("received: %s", buffer);
+				printf("received: %s\n", buffer);
 			}
 		break;
 		}
+	*/
+		client_socket = accept(server_socket, 0, 0);
 
+		if ( client_socket == EAGAIN )
+		{
+			return 0;
+		}
+
+		recv(client_socket, &buffer, sizeof(buffer), 0);
+		printf("received: %s\n", buffer);
 	}
 
 	return NETWORK_SUCCESS;
