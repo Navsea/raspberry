@@ -22,7 +22,7 @@ char setup_server(char * ip_address, uint32_t port )
 	struct pollfd network_socket_poll;
 	char buffer[256];
 
-	server_socket = socket(AF_INET, SOCK_STREAM, SOCK_NONBLOCK);
+	server_socket = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);
 
 	if ( server_socket < 0 )
 	{
