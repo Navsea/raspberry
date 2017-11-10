@@ -21,6 +21,15 @@ char setup_server(char * ip_address, uint32_t port )
 	struct sockaddr_in server_address;
 	struct pollfd network_socket_poll;
 	char buffer[256];
+	char html_header[] = "HTTP/1.1 200 OK\r\n\n";
+	FILE * html_data;
+	char html_response[4096] = {0};
+
+	// open the html page
+	html_data = fopen("index.html", "r");
+	while(fgets(html_response, sizeof(html_response), html_data));
+
+	strcat(html_response, html_header);
 
 	server_socket = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);
 
@@ -79,7 +88,7 @@ char setup_server(char * ip_address, uint32_t port )
 		switch( poll(&network_socket_poll, 1, 0) )
 		{
 		case 0:
-			printf("poll has timed out\n");
+			//printf("poll has timed out\n");
 			break;
 		case -1:
 			printf(" A poll error has occurred: %s\n", strerror(errno));
@@ -90,24 +99,15 @@ char setup_server(char * ip_address, uint32_t port )
 				client_socket = accept(server_socket, 0, 0);
 				recv(client_socket, &buffer, sizeof(buffer), 0);
 				printf("received: %s\n", buffer);
+				// found command
+				if ( !strcmp(buffer, "Give me page")  )
+				{
+					send(client_socket, html_response, sizeof(html_response), 0);
+				}
 			}
 			return 0;
 		break;
 		}
-
-		/*
-		client_socket = accept(server_socket, 0, 0);
-
-		if ( client_socket == EAGAIN )
-		{
-			return 0;
-		}
-
-		memset(&buffer, 0, sizeof(buffer));
-
-		recv(client_socket, &buffer, sizeof(buffer), 0);
-		printf("server received client req: %s\n", buffer);
-		*/
 	}
 }
 
