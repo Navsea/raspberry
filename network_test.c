@@ -7,8 +7,10 @@
 
 #include "network.h"
 
-void main(int argc, char *argv[] )
+int main(int argc, char *argv[] )
 {
 	setup_server(argv[1], 80);
 	setup_client(argv[1], 80);
+
+	return 0;
 }

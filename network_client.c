@@ -55,7 +55,7 @@ char setup_client(char * ip_address, uint32_t port )
 	send(client_socket, request, sizeof(request), 0);
 	recv(client_socket, response, sizeof(response), 0);
 
-	printf("client received server response: %s", response);
+	printf("client received server response: %s\n", response);
 	close(client_socket);
 
 	return NETWORK_SUCCESS;

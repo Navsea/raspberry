@@ -102,6 +102,8 @@ char setup_server(char * ip_address, uint32_t port )
 			return 0;
 		}
 
+		memset(&buffer, 0, sizeof(buffer));
+
 		recv(client_socket, &buffer, sizeof(buffer), 0);
 		printf("server received client req: %s\n", buffer);
 	}
