@@ -76,7 +76,7 @@ char setup_server(char * ip_address, uint32_t port )
 
 	while(1)
 	{
-		switch( poll(&network_socket_poll, 1, 60000) )
+		switch( poll(&network_socket_poll, 1, 0) )
 		{
 		case 0:
 			printf("poll has timed out\n");
