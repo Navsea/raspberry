@@ -6,6 +6,10 @@
  */
 #include <sys/socket.h>
 #include <stdint.h>
+#include <stdio.h>
+#include <errno.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 #include "network.h"
 
 char setup_client(char * ip_address, uint32_t port )
