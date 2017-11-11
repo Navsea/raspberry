@@ -70,8 +70,8 @@ char setup_client(char * ip_address, uint32_t port )
 			printf(" A poll error has occurred: %s\n", strerror(errno));
 			break;
 		default:
-			// POLLIN event will be kept SET if the other has closed connector (EOF), detected by POLLHUP (not sure)
-			if ( (client_socket_poll.revents & POLLIN) && !(client_socket_poll.revents & POLLHUP))
+			// POLLIN event will be kept SET if the other has closed connector (EOF), detected by POLLHUP (not sure)&& !(client_socket_poll.revents & POLLHUP)
+			if ( client_socket_poll.revents & POLLIN )
 			{
 				while(recv(client_socket, response, sizeof(response), 0));
 				printf("client received server response: %s\n", response);
