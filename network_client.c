@@ -18,7 +18,7 @@ char setup_client(char * ip_address, uint32_t port )
 	int32_t client_socket;
 	struct sockaddr_in remote_address;
 	char request[] = "GIVE";//"GET / HTTP/1.1\r\n\n";
-	char response[4096] = {0};
+	char response[255][256] = {0};
 	struct pollfd client_socket_poll;
 
 	client_socket = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);
@@ -73,7 +73,11 @@ char setup_client(char * ip_address, uint32_t port )
 			// POLLIN event will be kept SET if the other has closed connector (EOF), detected by POLLHUP (not sure)&& !(client_socket_poll.revents & POLLHUP)
 			if ( client_socket_poll.revents & POLLIN )
 			{
-				while(recv(client_socket, response, sizeof(response), 0));
+				//If no messages are available at the socket, the receive calls wait
+			    //  for a message to arrive, unless the socket is nonblocking (see
+			    //   fcntl(2)), in which case the value -1 is returned and the external
+			    //   variable errno is set to EAGAIN or EWOULDBLOCK.
+				while(recv(client_socket, response, sizeof(response), 0)>0);
 				printf("client received server response: %s\n", response);
 			}
 		}
