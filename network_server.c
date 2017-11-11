@@ -24,18 +24,23 @@ char setup_server(char * ip_address, uint32_t port )
 	char html_header[] = "HTTP/1.1 200 OK\r\n\n";
 	FILE * html_data;
 	char html_response[255][256] = {0};
-	uint16_t loop = 0;
+	uint16_t loop1 = 0, loop2 = 0;
 
 	// open the html page
 	html_data = fopen("index.html", "r");
 	while(fgets(buffer, sizeof(buffer), html_data))
 	{
-		strcpy(html_response[loop], buffer);
-		loop++;
+		strcpy(html_response[loop1], buffer);
+		loop1++;
 	}
 
 	//strcat(html_response, html_header);
-	printf("server message: %s\n", html_response);
+	printf("server message: %s\n");
+	while(loop2 < loop1)
+	{
+		printf("%s\n", html_response[loop2]);
+		loop2++;
+	}
 
 	server_socket = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);
 
