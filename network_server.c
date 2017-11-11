@@ -110,7 +110,6 @@ char setup_server(char * ip_address, uint32_t port )
 					printf("Result of strcmp: %d\n", strcmp(buffer, "GIVE"));
 				}
 			}
-			return 0;
 		break;
 		}
 	}
