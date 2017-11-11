@@ -61,7 +61,7 @@ char setup_client(char * ip_address, uint32_t port )
 
 	while (1)
 	{
-		switch(poll(client_socket_poll, 1, 0))
+		switch(poll(&client_socket_poll, 1, 0))
 		{
 		case 0:
 			//printf("poll has timed out\n");
