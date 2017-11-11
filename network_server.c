@@ -30,7 +30,7 @@ char setup_server(char * ip_address, uint32_t port )
 	while(fgets(html_response, sizeof(html_response), html_data));
 
 	strcat(html_response, html_header);
-	printf("server message: %s\n", strcat);
+	printf("server message: %s\n", html_response);
 
 	server_socket = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);
 
