@@ -30,15 +30,21 @@ char setup_server(char * ip_address, uint32_t port )
 	html_data = fopen("index.html", "r");
 	while(fgets(buffer, sizeof(buffer), html_data))
 	{
+		// First loop cpy header into message
+		if ( !loop1 )
+		{
+			strcat(html_response[loop1], html_header);
+			loop1++;
+		}
 		strcpy(html_response[loop1], buffer);
 		loop1++;
 	}
 
 	//strcat(html_response, html_header);
-	printf("server message: %s\n");
+	printf("server message:\n");
 	while(loop2 < loop1)
 	{
-		printf("%s\n", html_response[loop2]);
+		printf("%s", html_response[loop2]);	// don't add a newline, already present
 		loop2++;
 	}
 
