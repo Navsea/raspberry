@@ -71,7 +71,7 @@ char setup_client(char * ip_address, uint32_t port )
 			break;
 		default:
 			// POLLIN event will be kept SET if the other has closed connector (EOF), detected by POLLHUP (not sure)&& !(client_socket_poll.revents & POLLHUP)
-			if ( client_socket_poll.revents & POLLIN )
+			if ( client_socket_poll.revents & POLLIN && !(client_socket_poll.revents & POLLHUP) )
 			{
 				//If no messages are available at the socket, the receive calls wait
 			    //  for a message to arrive, unless the socket is nonblocking (see
