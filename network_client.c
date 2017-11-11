@@ -10,6 +10,7 @@
 #include <errno.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include "poll.h"
 #include "network.h"
 
 char setup_client(char * ip_address, uint32_t port )
@@ -18,6 +19,7 @@ char setup_client(char * ip_address, uint32_t port )
 	struct sockaddr_in remote_address;
 	char request[] = "GIVE";//"GET / HTTP/1.1\r\n\n";
 	char response[4096] = {0};
+	struct pollfd client_socket_poll;
 
 	client_socket = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);
 
@@ -54,10 +56,26 @@ char setup_client(char * ip_address, uint32_t port )
 
 	send(client_socket, request, sizeof(request), 0);
 
-	while(recv(client_socket, response, sizeof(response), 0));
+	client_socket_poll.fd = client_socket;
+	client_socket_poll.events = POLLIN;
 
-	printf("client received server response: %s\n", response);
-	close(client_socket);
-
-	return NETWORK_SUCCESS;
+	while (1)
+	{
+		switch(poll(client_socket_poll, 1, 0))
+		{
+		case 0:
+			//printf("poll has timed out\n");
+			break;
+		case -1:
+			printf(" A poll error has occurred: %s\n", strerror(errno));
+			break;
+		default:
+			if ( client_socket_poll.revents & POLLIN )
+			{
+				while(recv(client_socket, response, sizeof(response), 0));
+				printf("client received server response: %s\n", response);
+			}
+		}
+		//close(client_socket);
+	}
 }

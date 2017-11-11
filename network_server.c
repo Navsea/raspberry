@@ -19,7 +19,7 @@ char setup_server(char * ip_address, uint32_t port )
 {
 	int32_t server_socket, client_socket;
 	struct sockaddr_in server_address;
-	struct pollfd network_socket_poll;
+	struct pollfd server_socket_poll;
 	char buffer[256];
 	char html_header[] = "HTTP/1.1 200 OK\r\n\n";
 	FILE * html_data;
@@ -79,13 +79,13 @@ char setup_server(char * ip_address, uint32_t port )
 		printf("succeeded to set socket to listen\n");
 	}
 
-	memset(&network_socket_poll, 0, sizeof(network_socket_poll));
-	network_socket_poll.fd = server_socket;
-	network_socket_poll.events = POLLIN;	// check for data to read
+	memset(&server_socket_poll, 0, sizeof(server_socket_poll));
+	server_socket_poll.fd = server_socket;
+	server_socket_poll.events = POLLIN;	// check for data to read
 
 	while(1)
 	{
-		switch( poll(&network_socket_poll, 1, 0) )
+		switch( poll(&server_socket_poll, 1, 0) )
 		{
 		case 0:
 			//printf("poll has timed out\n");
@@ -94,7 +94,7 @@ char setup_server(char * ip_address, uint32_t port )
 			printf(" A poll error has occurred: %s\n", strerror(errno));
 			break;
 		default:
-			if (network_socket_poll.revents & POLLIN)
+			if (server_socket_poll.revents & POLLIN)
 			{
 				client_socket = accept(server_socket, 0, 0);
 				recv(client_socket, &buffer, sizeof(buffer), 0);
