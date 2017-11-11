@@ -30,7 +30,7 @@ char setup_server(char * ip_address, uint32_t port )
 	html_data = fopen("index.html", "r");
 	while(fgets(buffer, sizeof(buffer), html_data))
 	{
-		html_response[loop] = buffer;
+		strcpy(html_response[loop], buffer);
 		loop++;
 	}
 
