@@ -103,6 +103,7 @@ char setup_server(char * ip_address, uint32_t port )
 				if ( !strcmp(buffer, "GIVE")  )
 				{
 					send(client_socket, html_response, sizeof(html_response), 0);
+					printf("Found command, sending response\n");
 				}
 				else
 				{
