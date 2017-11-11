@@ -27,7 +27,7 @@ char setup_server(char * ip_address, uint32_t port )
 
 	// open the html page
 	html_data = fopen("index.html", "r");
-	while(fgets(html_response, sizeof(html_response), html_data));
+	fgets(html_response, sizeof(html_response), html_data);
 
 	//strcat(html_response, html_header);
 	printf("server message: %s\n", html_response);
