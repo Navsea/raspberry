@@ -23,11 +23,16 @@ char setup_server(char * ip_address, uint32_t port )
 	char buffer[256];
 	char html_header[] = "HTTP/1.1 200 OK\r\n\n";
 	FILE * html_data;
-	char html_response[4096] = {0};
+	char html_response[255][256] = {0};
+	uint16_t loop = 0;
 
 	// open the html page
 	html_data = fopen("index.html", "r");
-	fgets(html_response, sizeof(html_response), html_data);
+	while(fgets(buffer, sizeof(buffer), html_data))
+	{
+		html_response[loop] = buffer;
+		loop++;
+	}
 
 	//strcat(html_response, html_header);
 	printf("server message: %s\n", html_response);
@@ -83,6 +88,8 @@ char setup_server(char * ip_address, uint32_t port )
 	memset(&server_socket_poll, 0, sizeof(server_socket_poll));
 	server_socket_poll.fd = server_socket;
 	server_socket_poll.events = POLLIN;	// check for data to read
+
+	memset(&buffer, 0, sizeof(buffer));
 
 	while(1)
 	{
