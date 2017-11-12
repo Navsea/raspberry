@@ -47,6 +47,7 @@ int main(int argc, char *argv[] )
 		}
 		else
 		{
+			printf("Timeout: didnt get request in time\n");
 			close(client_socket);
 			client_send_timeout = CLIENT_TIMEOUT;
 		}
