@@ -61,7 +61,7 @@ int main(int argc, char *argv[] )
 uint8_t buffer_data(FILE * fd, char ** buffer)
 {
 	static uint8_t loop_counter;
-	while ( fgets((*buffer)[loop_counter], sizeof(*buffer), fd) )
+	while ( fgets(buffer[loop_counter], sizeof(*buffer), fd) )
 	{
 		loop_counter++;
 	}
