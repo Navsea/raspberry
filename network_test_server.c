@@ -26,7 +26,7 @@ int main(int argc, char *argv[] )
 
 	while(client_socket)
 	{
-		if ( !alarm(&client_send_timeout) )
+		if ( !alarm(client_send_timeout) )
 		{
 			if(get_client_data(client_socket, buffer, sizeof(buffer)))
 			{
