@@ -7,6 +7,7 @@
 
 #include <unistd.h>
 #include <stdio.h>
+#include <string.h>
 #include "network.h"
 
 #define CLIENT_TIMEOUT	5000
@@ -24,7 +25,7 @@ int main(int argc, char *argv[] )
 	while( !client_socket )
 	{
 		get_server_client(&server_socket_poll, &client_socket);
-		memset(&receive_data, sizeof(receive_data));
+		memset(&receive_data, 0, sizeof(receive_data));
 	}
 
 	while(client_socket)
@@ -45,7 +46,7 @@ int main(int argc, char *argv[] )
 		}
 	}
 
-	if ( strcmp(buffer, "GIVE") )
+	if ( strcmp(receive_data, "GIVE") )
 	{
 		printf("Client data command detected", receive_data);
 		send(client_socket, send_data, sizeof(send_data), 0);
