@@ -29,6 +29,7 @@ int main(int argc, char *argv[] )
 	{
 		if ( !alarm(client_send_timeout) )
 		{
+			printf("Trying to get client data\n");
 			if(get_client_data(client_socket, buffer, sizeof(buffer)))
 			{
 				printf("%s", buffer);
