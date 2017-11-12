@@ -35,8 +35,7 @@ int main(int argc, char *argv[] )
 			printf("Trying to get client data\n");
 			if(get_client_data(client_socket, receive_data, sizeof(receive_data)))
 			{
-				printf("Client data: %s\n \
-						strcmp: %s", receive_data, strcmp(receive_data, "GIVE"));
+				printf("Client data: %s\nstrcmp: %s\n", receive_data, strcmp(receive_data, "GIVE"));
 
 				if ( strcmp(receive_data, "GIVE") )
 				{
