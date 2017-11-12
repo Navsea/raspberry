@@ -8,19 +8,22 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
+#include <signal.h>
 #include "network.h"
 
 #define CLIENT_TIMEOUT	5000
 
+static int32_t client_socket = 0;
+static uint16_t client_send_timeout = CLIENT_TIMEOUT;
+
 int main(int argc, char *argv[] )
 {
 	struct pollfd server_socket_poll;
-	int32_t client_socket = 0;
-	uint16_t client_send_timeout = CLIENT_TIMEOUT;
 	char receive_data[128];
 	char send_data[128] = "HERE'S WHAT YOU WANT!\n";
 
 	set_server_socket_poll(argv[1], 80, &server_socket_poll);
+	signal( SIGALRM, handle_alarm );
 
 	while( !client_socket )
 	{
@@ -54,4 +57,11 @@ int main(int argc, char *argv[] )
 	}
 
 	return 0;
+}
+
+void alarm_handle(void )
+{
+	printf("Timeout: didnt get request in time\n");
+	close(client_socket);
+	client_send_timeout = CLIENT_TIMEOUT;
 }
