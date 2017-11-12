@@ -36,6 +36,11 @@ int main(int argc, char *argv[] )
 			if(get_client_data(client_socket, receive_data, sizeof(receive_data)))
 			{
 				printf("Client data: %s\n", receive_data);
+				if ( strcmp(receive_data, "GIVE") )
+				{
+					printf("Client data command detected", receive_data);
+					send(client_socket, send_data, sizeof(send_data), 0);
+				}
 				client_send_timeout = CLIENT_TIMEOUT;
 			}
 		}
@@ -44,12 +49,6 @@ int main(int argc, char *argv[] )
 			close(client_socket);
 			client_send_timeout = CLIENT_TIMEOUT;
 		}
-	}
-
-	if ( strcmp(receive_data, "GIVE") )
-	{
-		printf("Client data command detected", receive_data);
-		send(client_socket, send_data, sizeof(send_data), 0);
 	}
 
 	return 0;
