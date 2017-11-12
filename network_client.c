@@ -81,7 +81,5 @@ char setup_client(char * ip_address, uint32_t port )
 				printf("client received server response: %s\n", response);
 			}
 		}
-
-		//close(client_socket);
 	}
 }
