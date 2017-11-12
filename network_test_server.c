@@ -58,10 +58,10 @@ int main(int argc, char *argv[] )
 	return 0;
 }
 
-uint8_t buffer_data(FILE * fd, char * buffer[128])
+uint8_t buffer_data(FILE * fd, char *buffer[128])
 {
 	static uint8_t loop_counter;
-	while ( fgets(buffer[loop_counter], sizeof(*buffer), fd) )
+	while ( fgets(buffer[loop_counter], sizeof(buffer[128]), fd) )
 	{
 		loop_counter++;
 	}
