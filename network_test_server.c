@@ -25,7 +25,7 @@ int main(int argc, char *argv[] )
 	uint8_t nr_of_lines = 0;
 
 	web_page_fd = fopen("index.html", "r");
-	nr_of_lines = buffer_data(web_page_fd, send_data[0]);
+	nr_of_lines = buffer_data(web_page_fd, send_data);
 
 	for(loop_counter=0; loop_counter < nr_of_lines; loop_counter++)
 	{
@@ -58,10 +58,10 @@ int main(int argc, char *argv[] )
 	return 0;
 }
 
-uint8_t buffer_data(FILE * fd, char * buffer)
+uint8_t buffer_data(FILE * fd, char ** buffer)
 {
 	static uint8_t loop_counter;
-	while ( fgets(buffer[loop_counter], sizeof(buffer), fd) )
+	while ( fgets((*buffer)[loop_counter], sizeof(*buffer), fd) )
 	{
 		loop_counter++;
 	}
