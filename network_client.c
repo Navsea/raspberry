@@ -54,7 +54,7 @@ char setup_client(char * ip_address, uint32_t port )
 
 	connect(client_socket, (struct sockaddr *) &remote_address, sizeof(remote_address));
 
-	//send(client_socket, request, sizeof(request), 0);
+	send(client_socket, request, sizeof(request), 0);
 
 	client_socket_poll.fd = client_socket;
 	client_socket_poll.events = POLLIN;
