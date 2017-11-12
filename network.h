@@ -9,6 +9,7 @@
 #define NETWORK_H_
 
 #include <stdint.h>
+#include <sys/poll.h>
 
 #define NETWORK_SUCCESS		1
 #define NETWORK_FAIL		0
