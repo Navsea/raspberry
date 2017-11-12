@@ -27,11 +27,6 @@ int main(int argc, char *argv[] )
 	web_page_fd = fopen("index.html", "r");
 	nr_of_lines = buffer_data(web_page_fd, send_data);
 
-	for(loop_counter=0; loop_counter < nr_of_lines; loop_counter++)
-	{
-		printf("%s", send_data[loop_counter]);
-	}
-
 	set_server_socket_poll(argv[1], 80, &server_socket_poll);
 
 	while( !client_socket )
@@ -53,7 +48,12 @@ int main(int argc, char *argv[] )
 				loop_counter = 0;
 				for(loop_counter=0; loop_counter < nr_of_lines; loop_counter++)
 				{
-					send(client_socket, send_data, sizeof(send_data[loop_counter]), 0);
+					printf("%s", send_data[loop_counter]);
+				}
+				loop_counter = 0;
+				for(loop_counter=0; loop_counter < nr_of_lines; loop_counter++)
+				{
+					send(client_socket, send_data[loop_counter], sizeof(send_data[loop_counter]), 0);
 				}
 			}
 		}
