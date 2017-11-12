@@ -17,11 +17,10 @@
 #include "network.h"
 
 // returns server socket poll and sets it to listen
-struct pollfd* get_server_socket_poll(char * ip_address, uint16_t port )
+void set_server_socket_poll(char * ip_address, uint16_t port, struct pollfd *server_socket_poll )
 {
 	int32_t server_socket;
 	struct sockaddr_in server_address;
-	struct pollfd server_socket_poll;
 
 	server_socket = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);
 
@@ -71,11 +70,9 @@ struct pollfd* get_server_socket_poll(char * ip_address, uint16_t port )
 		printf("succeeded to set socket to listen\n");
 	}
 
-	memset(&server_socket_poll, 0, sizeof(server_socket_poll));
-	server_socket_poll.fd = server_socket;
-	server_socket_poll.events = POLLIN;	// check for data to read
-
-	return &server_socket_poll;
+	memset(server_socket_poll, 0, sizeof(*server_socket_poll));
+	*server_socket_poll.fd = server_socket;
+	*server_socket_poll.events = POLLIN;	// check for data to read
 }
 
 // checks for client connections and returns file descriptor to client socket

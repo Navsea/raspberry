@@ -12,12 +12,12 @@
 
 int main(int argc, char *argv[] )
 {
-	struct pollfd *server_socket_poll;
+	struct pollfd server_socket_poll;
 	int32_t client_socket = 0;
 	uint16_t client_send_timeout = CLIENT_TIMEOUT;
 	char buffer[128];
 
-	server_socket_poll = get_server_socket_poll(argv[1], 80);
+	set_server_socket_poll(argv[1], 80, &server_socket_poll);
 
 	while( !client_socket )
 	{
