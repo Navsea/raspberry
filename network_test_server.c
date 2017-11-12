@@ -6,6 +6,7 @@
  */
 
 #include <unistd.h>
+#include <stdio.h>
 #include "network.h"
 
 #define CLIENT_TIMEOUT	5000
