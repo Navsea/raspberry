@@ -15,8 +15,6 @@
 
 static int32_t client_socket = 0;
 
-static void buffer_data(FILE * fd, char * buffer);
-
 int main(int argc, char *argv[] )
 {
 	struct pollfd server_socket_poll;
