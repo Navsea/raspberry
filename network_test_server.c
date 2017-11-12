@@ -25,7 +25,7 @@ int main(int argc, char *argv[] )
 	uint8_t nr_of_lines = 0;
 
 	web_page_fd = fopen("index.html", "r");
-	nr_of_lines = buffer_data(web_page_fd, send_data);
+	nr_of_lines = buffer_data(web_page_fd, send_data[0]);
 
 	for(loop_counter=0; loop_counter < nr_of_lines; loop_counter++)
 	{
