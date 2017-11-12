@@ -50,7 +50,11 @@ int main(int argc, char *argv[] )
 			// check for equal command
 			if ( !strcmp(receive_data, "GIVE") )
 			{
-				send(client_socket, send_data, sizeof(send_data[0]), 0);
+				loop_counter = 0;
+				for(loop_counter=0; loop_counter < nr_of_lines; loop_counter++)
+				{
+					send(client_socket, send_data, sizeof(send_data[loop_counter]), 0);
+				}
 			}
 		}
 	}
