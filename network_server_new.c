@@ -92,6 +92,7 @@ void  get_server_client(struct pollfd *server_socket_poll, int32_t *client_socke
 		if (server_socket_poll->revents & POLLIN)
 		{
 			*client_socket = accept(server_socket_poll->fd, 0, 0);
+			printf("Accepted client\n", strerror(errno));
 		}
 	break;
 	}
