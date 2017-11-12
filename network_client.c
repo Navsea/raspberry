@@ -17,7 +17,7 @@ char setup_client(char * ip_address, uint32_t port )
 {
 	int32_t client_socket;
 	struct sockaddr_in remote_address;
-	char request[] = "GIVE\nME\nINFORMATION";//"GET / HTTP/1.1\r\n\n";
+	char request[] = "GIVE\nME\nINFORMATION\n";//"GET / HTTP/1.1\r\n\n";
 	char response[255][256] = {0};
 	struct pollfd client_socket_poll;
 
