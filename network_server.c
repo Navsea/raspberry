@@ -20,7 +20,7 @@ char setup_server(char * ip_address, uint32_t port )
 	int32_t server_socket, client_socket;
 	struct sockaddr_in server_address;
 	struct pollfd server_socket_poll;
-	char buffer[256];
+	char buffer[128];
 	char html_header[] = "HTTP/1.1 200 OK\r\n\n";
 	FILE * html_data;
 	char html_response[255][256] = {0};

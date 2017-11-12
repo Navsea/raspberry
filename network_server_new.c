@@ -104,7 +104,7 @@ int32_t  get_server_client(struct pollfd * server_socket_poll)
 
 // get the data from the client socket and store it in buffer
 // can only get one line!
-int8_t get_client_data(int32_t client_socket, char *buffer, uint16_t size)
+int8_t get_client_data(int32_t client_socket, char *buffer, uint8_t size)
 {
 	int8_t received_bytes;
 	switch( received_bytes = (int8_t)recv(client_socket, buffer, size) )
