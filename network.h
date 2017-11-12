@@ -14,7 +14,7 @@
 #define NETWORK_FAIL		0
 
 // returns server socket poll and sets it to listen
-void set_server_socket_poll(char * ip_address, uint16_t port );
+void set_server_socket_poll(char * ip_address, uint16_t port, struct pollfd *server_socket_poll );
 // checks for client connections
 int32_t  get_server_client(int32_t server_socket);
 // get the data from the client socket and store it in buffer
