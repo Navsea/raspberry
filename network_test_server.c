@@ -19,7 +19,7 @@ int main(int argc, char *argv[] )
 {
 	struct pollfd server_socket_poll;
 	char receive_data[128];
-	char send_data[256][128] = {0};
+	char send_data[256] = {0};
 	FILE * web_page_fd = 0;
 
 	web_page_fd = fopen("index.html", "r");
