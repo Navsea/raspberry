@@ -14,18 +14,20 @@
 #define CLIENT_TIMEOUT	5000
 
 static int32_t client_socket = 0;
-static uint16_t client_send_timeout = CLIENT_TIMEOUT;
-
-void alarm_handle(void );
 
 int main(int argc, char *argv[] )
 {
 	struct pollfd server_socket_poll;
 	char receive_data[128];
-	char send_data[128] = "HERE'S WHAT YOU WANT!\n";
+	char send_data[256][128] = {0};
+	FILE * web_page_fd = 0;
+
+	web_page_fd = fopen("index.html", "r");
+
+	while( fgets(send_data, sizeof(send_data), web_page_fd) );
+	printf("html file:\n%s", send_data);
 
 	set_server_socket_poll(argv[1], 80, &server_socket_poll);
-	signal( SIGALRM, alarm_handle );
 
 	while( !client_socket )
 	{
@@ -35,19 +37,15 @@ int main(int argc, char *argv[] )
 
 	while(client_socket)
 	{
-		if ( !alarm(client_send_timeout) )
+
+		printf("Trying to get client data\n");
+		if(get_client_data(client_socket, receive_data, sizeof(receive_data)))
 		{
-			printf("Trying to get client data\n");
-			if(get_client_data(client_socket, receive_data, sizeof(receive_data)))
+			printf("Client data: %s\n", receive_data);
+			// check for equal command
+			if ( !strcmp(receive_data, "GIVE") )
 			{
-				printf("Client data: %s\n", receive_data);
-				// check for equal command
-				if ( !strcmp(receive_data, "GIVE") )
-				{
-					printf("Client data command detected", receive_data);
-					send(client_socket, send_data, sizeof(send_data), 0);
-				}
-				client_send_timeout = CLIENT_TIMEOUT;
+				send(client_socket, send_data, sizeof(send_data), 0);
 			}
 		}
 	}
@@ -55,9 +53,3 @@ int main(int argc, char *argv[] )
 	return 0;
 }
 
-void alarm_handle(void )
-{
-	printf("Timeout: didnt get request in time\n");
-	close(client_socket);
-	client_send_timeout = CLIENT_TIMEOUT;
-}
