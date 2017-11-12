@@ -15,17 +15,24 @@
 
 static int32_t client_socket = 0;
 
+static void buffer_data(FILE * fd, char * buffer);
+
 int main(int argc, char *argv[] )
 {
 	struct pollfd server_socket_poll;
 	char receive_data[128];
-	char send_data[256] = {0};
+	uint8_t loop_counter = 0;
+	char send_data[256][128] = {0};
 	FILE * web_page_fd = 0;
+	uint8_t nr_of_lines = 0;
 
 	web_page_fd = fopen("index.html", "r");
+	nr_of_lines = buffer_data(web_page_fd, send_data);
 
-	while( fgets(send_data, sizeof(send_data), web_page_fd) );
-	printf("html file:\n%s", send_data);
+	for(loop_counter=0; loop_counter < nr_of_lines; loop_counter++)
+	{
+		printf("%s", send_data[loop_counter]);
+	}
 
 	set_server_socket_poll(argv[1], 80, &server_socket_poll);
 
@@ -51,5 +58,15 @@ int main(int argc, char *argv[] )
 	}
 
 	return 0;
+}
+
+uint8_t buffer_data(FILE * fd, char * buffer)
+{
+	static uint8_t loop_counter;
+	while ( fgets(buffer[loop_counter], sizeof(buffer), fd) )
+	{
+		loop_counter++;
+	}
+	return loop_counter;
 }
 

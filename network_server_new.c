@@ -115,3 +115,4 @@ int8_t get_client_data(int32_t client_socket, char *buffer, uint8_t size)
 
 	return received_bytes;
 }
+
