@@ -107,7 +107,7 @@ int32_t  get_server_client(struct pollfd * server_socket_poll)
 int8_t get_client_data(int32_t client_socket, char *buffer, uint8_t size)
 {
 	int8_t received_bytes;
-	switch( received_bytes = (int8_t)recv(client_socket, buffer, size) )
+	switch( received_bytes = (int8_t)recv(client_socket, buffer, size, 0) )
 	{
 	case -1:	// no data available, errno is set to EAGAIN EWOULDBLOCK
 		break;
