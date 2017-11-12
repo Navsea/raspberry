@@ -110,7 +110,6 @@ int8_t get_client_data(int32_t client_socket, char *buffer, uint8_t size)
 	case 0:		// EOF reached
 		break;
 	default:	// store in buffer;
-		printf("receiving bytes\n");
 		break;
 	}
 
