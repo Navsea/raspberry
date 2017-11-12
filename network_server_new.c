@@ -17,7 +17,7 @@
 #include "network.h"
 
 // returns server socket poll and sets it to listen
-uint8_t set_server_socket_poll(char * ip_address, uint16_t port, struct pollfd* server_socket_poll )
+uint8_t set_server_socket_poll(char * ip_address, uint16_t port, struct pollfd *server_socket_poll )
 {
 	int32_t server_socket;
 	struct sockaddr_in server_address;
@@ -71,14 +71,14 @@ uint8_t set_server_socket_poll(char * ip_address, uint16_t port, struct pollfd* 
 	}
 
 	memset(server_socket_poll, 0, sizeof(*server_socket_poll));
-	(*server_socket_poll).fd = server_socket;
-	(*server_socket_poll).events = POLLIN;	// check for data to read
+	server_socket_poll->fd = server_socket;
+	server_socket_poll->events = POLLIN;	// check for data to read
 
 	return NETWORK_SUCCESS;
 }
 
 // checks for client connections and returns file descriptor to client socket
-int32_t  get_server_client(struct pollfd* server_socket_poll)
+int32_t  get_server_client(struct pollfd *server_socket_poll)
 {
 	int32_t client_socket = 0;
 
@@ -91,7 +91,7 @@ int32_t  get_server_client(struct pollfd* server_socket_poll)
 		printf(" A poll error has occurred: %s\n", strerror(errno));
 		break;
 	default:
-		if ((*server_socket_poll).revents & POLLIN)
+		if (server_socket_poll->revents & POLLIN)
 		{
 			client_socket = accept(server_socket_poll->fd, 0, 0);
 			return client_socket;
