@@ -21,6 +21,6 @@ void get_server_client(struct pollfd *server_socket_poll, int32_t *client_socket
 // get the data from the client socket and store it in buffer
 int8_t get_client_data(int32_t client_socket, char *buffer, uint8_t size);
 
-uint8_t buffer_data(FILE * fd, char ** buffer);
+uint8_t buffer_data(FILE * fd, char * buffer[128]);
 
 #endif /* NETWORK_H_ */
