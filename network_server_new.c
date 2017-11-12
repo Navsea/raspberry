@@ -78,10 +78,8 @@ uint8_t set_server_socket_poll(char * ip_address, uint16_t port, struct pollfd *
 }
 
 // checks for client connections and returns file descriptor to client socket
-int32_t  get_server_client(struct pollfd *server_socket_poll)
+void  get_server_client(struct pollfd *server_socket_poll, int32_t *client_socket)
 {
-	int32_t client_socket = 0;
-
 	switch( poll(server_socket_poll, 1, 0) )
 	{
 	case 0:
@@ -93,13 +91,10 @@ int32_t  get_server_client(struct pollfd *server_socket_poll)
 	default:
 		if (server_socket_poll->revents & POLLIN)
 		{
-			client_socket = accept(server_socket_poll->fd, 0, 0);
-			return client_socket;
+			*client_socket = accept(server_socket_poll->fd, 0, 0);
 		}
 	break;
 	}
-
-	return 0;
 }
 
 // get the data from the client socket and store it in buffer

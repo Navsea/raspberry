@@ -19,6 +19,6 @@ uint8_t set_server_socket_poll(char * ip_address, uint16_t port, struct pollfd *
 // checks for client connections
 int32_t  get_server_client(struct pollfd *server_socket_poll);
 // get the data from the client socket and store it in buffer
-int8_t get_client_data(int32_t client_socket, char *buffer, uint8_t size);
+int8_t get_client_data(int32_t *client_socket, char *buffer, uint8_t size);
 
 #endif /* NETWORK_H_ */

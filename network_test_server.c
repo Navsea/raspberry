@@ -21,7 +21,7 @@ int main(int argc, char *argv[] )
 
 	while( !client_socket )
 	{
-		client_socket = get_server_client(server_socket_poll);
+		get_server_client(&server_socket_poll, &client_socket);
 	}
 
 	while(client_socket)
