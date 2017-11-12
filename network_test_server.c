@@ -25,7 +25,7 @@ int main(int argc, char *argv[] )
 	char send_data[128] = "HERE'S WHAT YOU WANT!\n";
 
 	set_server_socket_poll(argv[1], 80, &server_socket_poll);
-	signal( SIGALRM, handle_alarm );
+	signal( SIGALRM, alarm_handle );
 
 	while( !client_socket )
 	{
@@ -49,12 +49,6 @@ int main(int argc, char *argv[] )
 				}
 				client_send_timeout = CLIENT_TIMEOUT;
 			}
-		}
-		else
-		{
-			printf("Timeout: didnt get request in time\n");
-			close(client_socket);
-			client_send_timeout = CLIENT_TIMEOUT;
 		}
 	}
 
