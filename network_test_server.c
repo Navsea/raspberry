@@ -16,7 +16,7 @@
 static int32_t client_socket = 0;
 static uint16_t client_send_timeout = CLIENT_TIMEOUT;
 
-static void alarm_handle(void );
+void alarm_handle(void );
 
 int main(int argc, char *argv[] )
 {
@@ -55,7 +55,7 @@ int main(int argc, char *argv[] )
 	return 0;
 }
 
-static void alarm_handle(void )
+void alarm_handle(void )
 {
 	printf("Timeout: didnt get request in time\n");
 	close(client_socket);
