@@ -45,7 +45,7 @@ int main(int argc, char *argv[] )
 		}
 	}
 
-	if ( strcmp(buffer, "GIVE\nME\nINFORMATION\n") )
+	if ( strcmp(buffer, "GIVE") )
 	{
 		printf("Client data command detected", receive_data);
 		send(client_socket, send_data, sizeof(send_data), 0);
