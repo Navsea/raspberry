@@ -50,7 +50,7 @@ int main(int argc, char *argv[] )
 			// check for equal command
 			if ( !strcmp(receive_data, "GIVE") )
 			{
-				send(client_socket, send_data, sizeof(send_data), 0);
+				send(client_socket, send_data, sizeof(send_data[0]), 0);
 			}
 		}
 	}
@@ -58,7 +58,7 @@ int main(int argc, char *argv[] )
 	return 0;
 }
 
-uint8_t buffer_data(FILE * fd, char buffer[][])
+uint8_t buffer_data(FILE * fd, char buffer[][128])
 {
 	static uint8_t loop_counter;
 	while ( fgets(buffer[loop_counter], 128, fd) )
