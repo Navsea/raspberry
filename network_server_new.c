@@ -1,9 +1,10 @@
 /*
- * network_server.c
+ * network_server_new.c
  *
- *  Created on: 10 nov. 2017
+ *  Created on: 12 nov. 2017
  *      Author: Kenneth
  */
+
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <errno.h>
@@ -15,38 +16,12 @@
 #include <string.h>
 #include "network.h"
 
-char setup_server(char * ip_address, uint32_t port )
+// returns server socket poll and sets it to listen
+struct pollfd* get_server_socket_poll(char * ip_address, uint16_t port )
 {
-	int32_t server_socket, client_socket;
+	int32_t server_socket;
 	struct sockaddr_in server_address;
 	struct pollfd server_socket_poll;
-	char buffer[256];
-	char html_header[] = "HTTP/1.1 200 OK\r\n\n";
-	FILE * html_data;
-	char html_response[255][256] = {0};
-	uint16_t loop1 = 0, loop2 = 0;
-
-	// open the html page
-	html_data = fopen("index.html", "r");
-	while(fgets(buffer, sizeof(buffer), html_data))
-	{
-		// First loop cpy header into message
-		if ( !loop1 )
-		{
-			strcat(html_response[loop1], html_header);
-			loop1++;
-		}
-		strcpy(html_response[loop1], buffer);
-		loop1++;
-	}
-
-	//strcat(html_response, html_header);
-	printf("server message:\n");
-	while(loop2 < loop1)
-	{
-		printf("%s", html_response[loop2]);	// don't add a newline, already present
-		loop2++;
-	}
 
 	server_socket = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);
 
@@ -100,38 +75,48 @@ char setup_server(char * ip_address, uint32_t port )
 	server_socket_poll.fd = server_socket;
 	server_socket_poll.events = POLLIN;	// check for data to read
 
-	memset(&buffer, 0, sizeof(buffer));
-
-	while(1)
-	{
-		switch( poll(&server_socket_poll, 1, 0) )
-		{
-		case 0:
-			//printf("poll has timed out\n");
-			break;
-		case -1:
-			printf(" A poll error has occurred: %s\n", strerror(errno));
-			break;
-		default:
-			if (server_socket_poll.revents & POLLIN)
-			{
-				client_socket = accept(server_socket, 0, 0);
-				recv(client_socket, &buffer, sizeof(buffer), 0);
-				printf("received: %s\n", buffer);
-				// found command
-				if ( !strcmp(buffer, "GIVE")  )
-				{
-					// have to send multiple times line per line
-					send(client_socket, html_response, sizeof(html_response), 0);
-					printf("Found command, sending response\n");
-				}
-				else
-				{
-					printf("Result of strcmp: %d\n", strcmp(buffer, "GIVE"));
-				}
-			}
-		break;
-		}
-	}
+	return &server_socket_poll;
 }
 
+// checks for client connections and returns file descriptor to client socket
+int32_t  get_server_client(struct pollfd * server_socket_poll)
+{
+	int32_t client_socket = 0;
+
+	switch( poll(&server_socket_poll, 1, 0) )
+	{
+	case 0:
+		//printf("poll has timed out\n");
+		break;
+	case -1:
+		printf(" A poll error has occurred: %s\n", strerror(errno));
+		break;
+	default:
+		if (server_socket_poll.revents & POLLIN)
+		{
+			client_socket = accept(server_socket_poll, 0, 0);
+			return client_socket;
+		}
+	break;
+	}
+
+	return 0;
+}
+
+// get the data from the client socket and store it in buffer
+// can only get one line!
+int8_t get_client_data(int32_t client_socket, char *buffer, uint16_t size)
+{
+	int8_t received_bytes;
+	switch( received_bytes = (int8_t)recv(client_socket, buffer, size) )
+	{
+	case -1:	// no data available, errno is set to EAGAIN EWOULDBLOCK
+		break;
+	case 0:		// EOF reached
+		break;
+	default:	// store in buffer;
+		break;
+	}
+
+	return received_bytes;
+}
